@@ -24,9 +24,10 @@ namespace SceneDisplayer {
 
 
         public void Init(Scene defaultScene, string title) {
-            this.PushScene(defaultScene);
-
+            SDL_ttf.TTF_Init();
             SDL.SDL_Init(0);
+
+            this.PushScene(defaultScene);
 
             this._window = SDL.SDL_CreateWindow(
                 title, 0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT,
@@ -82,8 +83,6 @@ namespace SceneDisplayer {
                         break;
                     }
                 }
-                
-                //self._window.refresh();
             }
 
             SDL.SDL_Quit();
