@@ -10,7 +10,7 @@ namespace SceneDisplayer.Entities {
             this.Color = color;
         }
 
-        public SDL.SDL_Color Color { get; }
+        public SDL.SDL_Color Color { get; set; }
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);

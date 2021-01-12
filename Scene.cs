@@ -14,10 +14,24 @@ namespace SceneDisplayer {
         public List<Entity> Entities { get; }
 
 
-        public virtual void Init() { }
+        public void Init() {
+            foreach (var entity in this.Entities) {
+                entity.Init();
+            }
+        }
 
         public void OnClick(int x, int y) {
-            foreach (var entity in this.Entities.Where(e => e is IClickable)) {
+            foreach (var entity in this.Entities) {
+                this.OnClickRec(entity, x, y);
+            }
+        }
+
+        private void OnClickRec(Entity entity, int x, int y) {
+            foreach (var child in entity.Children.Values) {
+                this.OnClickRec(child, x, y);
+            }
+
+            if (entity is IClickable) {
                 var clickable = entity as IClickable;
 
                 if (clickable.Contains(new SDL.SDL_Point { x = x, y = y })) {

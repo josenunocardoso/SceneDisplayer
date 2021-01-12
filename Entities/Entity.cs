@@ -8,25 +8,34 @@ namespace SceneDisplayer.Entities {
 
         protected Entity(bool relativeToScreenSize = true) {
             this.RelativeToScreenSize = relativeToScreenSize;
-            this.Children = new List<Entity>();
+            this.Children = new Dictionary<object, Entity>();
         }
 
 
+        public object Key { get; private set; }
+
         protected bool RelativeToScreenSize { get; }
 
-        public List<Entity> Children { get; }
+        public Dictionary<object, Entity> Children { get; }
 
 
-        public void AddChild(Entity child) {
+        public void AddChild(object key, Entity child) {
             if (child == null) {
                 throw new ArgumentNullException("child");
             }
 
-            this.Children.Add(child);
+            if (this.Children.ContainsKey(key)) {
+                throw new ArgumentException("Child already exists");
+            }
+
+            child.Key = key;
+            this.Children.Add(key, child);
         }
 
+        public virtual void Init() { }
+
         public virtual void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            foreach (var child in this.Children) {
+            foreach (var child in this.Children.Values) {
                 child.Draw(renderer, screenWidth, screenHeight);
             }
         }
@@ -51,7 +60,7 @@ namespace SceneDisplayer.Entities {
             this.Area = area;
         }
 
-        public RectF Area { get; }
+        public RectF Area { get; set;}
 
 
         public event EventHandler<ClickArgs> Click;
