@@ -53,6 +53,7 @@ namespace SceneDisplayer {
             bool running = true;
 
             while (running) {
+
                 SDL.SDL_SetRenderDrawColor(this._renderer,
                     BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
 
