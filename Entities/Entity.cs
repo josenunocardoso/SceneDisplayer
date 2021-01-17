@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using SceneDisplayer.Utils;
 using SDL2;
 
@@ -51,7 +52,19 @@ namespace SceneDisplayer.Entities {
                 throw new ArgumentException("Child does not exist");
             }
 
+            this.Children[key].Dispose();
+
             return this.Children.Remove(key);
+        }
+
+        public void RemoveChildren(Predicate<Entity> pred) {
+            foreach (var child in this.Children.Values.Where(c => pred(c))) {
+                this.RemoveChild(child);
+            }
+        }
+
+        public void ClearChildren() {
+            this.Children.Clear();
         }
 
         public virtual void Init() { }

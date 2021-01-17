@@ -27,23 +27,33 @@ namespace SceneDisplayer.Entities {
 
         public int FontSize { get; }
 
-        public PointF Location { get; }
+        public PointF Location { get; set; }
 
 
-        private void CreateBitmapFont(IntPtr renderer, FontCharacteristics key) {
-            var bitmapFontTexture = ResourcesManager.GetBitmapTexture(renderer, this.Text, this.FontSize, this.Font,
-                new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
+        private static void CreateBitmapFont(IntPtr renderer, string text, string font, int fontSize, FontCharacteristics key) {
+            var bitmapFontTexture = ResourcesManager.GetBitmapTexture(renderer,
+                text, fontSize, font, new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
             
             CachedBitmapFonts.Add(key, bitmapFontTexture);
         }
 
+        public static (int, int) GetTextSize(string text, string font, int fontSize) {
+            var key = new FontCharacteristics(text, font, fontSize);
+
+            if (!CachedBitmapFonts.ContainsKey(key)) {
+                return (-1, -1);
+            }
+
+            return (CachedBitmapFonts[key].Item2, CachedBitmapFonts[key].Item3);
+        }
+
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
-
+            
             var key = new FontCharacteristics(this.Text, this.Font, this.FontSize);
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
-                this.CreateBitmapFont(renderer, key);
+                CreateBitmapFont(renderer, this.Text, this.Font, this.FontSize, key);
             }
 
             var (bitmapFont, w, h) = CachedBitmapFonts[key];
