@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using SDL2;
+using SceneDisplayer.Utils;
+
+namespace SceneDisplayer.Entities {
+    public class Image : RectangularEntity {
+
+        static Image() {
+            CachedTextures = new Dictionary<TextureCaracteristics, IntPtr>();
+        }
+
+        public Image(RectF area, string path, bool relativeToScreenSize = true)
+        : base(area, relativeToScreenSize) {
+            this.ImagePath = path;
+        }
+
+
+        private static Dictionary<TextureCaracteristics, IntPtr> CachedTextures { get; set; }
+
+        public string ImagePath { get; set; }
+
+
+        private void CreateTexture(IntPtr renderer, TextureCaracteristics key) {
+            var temp = SDL_image.IMG_Load(this.ImagePath);
+            var texture = SDL.SDL_CreateTextureFromSurface(renderer, temp);
+
+            SDL.SDL_FreeSurface(temp);
+
+            if (texture == IntPtr.Zero) {
+                SDL.SDL_DestroyTexture(texture);
+                throw new ArgumentException("Texture given was not loaded");
+            }
+
+            CachedTextures[key] = texture;
+        }
+
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
+            base.Draw(renderer, screenWidth, screenHeight);
+
+            var key = new TextureCaracteristics(this.ImagePath, this.Area);
+
+            if (!CachedTextures.ContainsKey(key)) {
+                this.CreateTexture(renderer, key);
+            }
+
+            var texture = CachedTextures[key];
+
+            var area = this.GetAbsoluteArea(screenWidth, screenHeight);
+
+            SDL.SDL_RenderCopy(renderer, texture, IntPtr.Zero, ref area);
+        }
+    }
+
+    public struct TextureCaracteristics {
+        public string ImagePath;
+        public RectF Area;
+
+        public TextureCaracteristics(string path, RectF area) {
+            this.ImagePath = path;
+            this.Area = area;
+        }
+    }
+}

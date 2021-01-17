@@ -1,4 +1,3 @@
-using System.Linq;
 using SDL2;
 using SceneDisplayer.Entities;
 using System.Collections.Generic;

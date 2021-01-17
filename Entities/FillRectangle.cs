@@ -3,7 +3,7 @@ using SceneDisplayer.Utils;
 using SDL2;
 
 namespace SceneDisplayer.Entities {
-    public class FillRectangle : RectanglarEntity {
+    public class FillRectangle : RectangularEntity {
         
         public FillRectangle(RectF area, SDL.SDL_Color color, bool relativeToScreenSize = true)
         : base(area, relativeToScreenSize) {

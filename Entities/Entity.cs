@@ -30,6 +30,28 @@ namespace SceneDisplayer.Entities {
 
             child.Key = key;
             this.Children.Add(key, child);
+            child.Init();
+        }
+
+        public void EditChild(object key, Entity child) {
+            if (child == null) {
+                throw new ArgumentNullException("child");
+            }
+
+            if (!this.Children.ContainsKey(key)) {
+                throw new ArgumentException("Child does not exist");
+            }
+
+            this.Children[key] = child;
+            child.Init();
+        }
+
+        public bool RemoveChild(object key) {
+            if (!this.Children.ContainsKey(key)) {
+                throw new ArgumentException("Child does not exist");
+            }
+
+            return this.Children.Remove(key);
         }
 
         public virtual void Init() { }
@@ -54,13 +76,14 @@ namespace SceneDisplayer.Entities {
         public virtual void Dispose() { }
     }
 
-    public abstract class RectanglarEntity : Entity, IClickable {
+    public abstract class RectangularEntity : Entity, IClickable {
 
-        protected RectanglarEntity(RectF area, bool relativeToScreenSize) : base(relativeToScreenSize) {
+        protected RectangularEntity(RectF area, bool relativeToScreenSize) : base(relativeToScreenSize) {
             this.Area = area;
         }
 
-        public RectF Area { get; set;}
+
+        public RectF Area { get; set; }
 
 
         public event EventHandler<ClickArgs> Click;

@@ -3,7 +3,7 @@ using SceneDisplayer.Utils;
 using SDL2;
 
 namespace SceneDisplayer.Entities {
-    public class Rectangle : RectanglarEntity {
+    public class Rectangle : RectangularEntity {
         
         public Rectangle(RectF area, SDL.SDL_Color color, bool relativeToScreenSize = true)
         : base(area, relativeToScreenSize) {
