@@ -86,6 +86,13 @@ namespace SceneDisplayer.Entities {
                 };
         }
 
+        protected PointF GetRelativePoint(SDL.SDL_Point point, int screenWidth, int screenHeight) {
+            return new PointF {
+                x = (float)point.x / screenWidth,
+                y = (float)point.y / screenHeight
+            };
+        }
+
         public virtual void Dispose() { }
     }
 

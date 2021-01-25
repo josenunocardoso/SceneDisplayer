@@ -32,14 +32,14 @@ namespace SceneDisplayer.Entities
 
         public override void Init() {
             this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.RelativeToScreenSize));
-
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
-                new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 },
-                this.RelativeToScreenSize));
+                new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 }, false));
         }
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
+
+            var area = this.GetAbsoluteArea(screenWidth, screenHeight);
 
             if (this.textSize == null) {
                 this.textSize = TextEntity.GetTextSize(this.Text, this.Font, this.FontSize);
@@ -48,9 +48,11 @@ namespace SceneDisplayer.Entities
 
                 switch (this.Alignment) {
                     case TextAlignment.Center: {
-                        (this.Children["Text"] as TextEntity).Location = new PointF {
-                            x = this.Area.x + this.Area.w / 2 - w / 2,
-                            y = this.Area.y + this.Area.h / 2 - h / 2
+                        var textEntity = this.Children["Text"] as TextEntity;
+
+                        textEntity.Location = new PointF {
+                            x = area.x + area.w / 2 - w / 2,
+                            y = area.y + area.h / 2 - h / 2
                         };
 
                         break;

@@ -30,7 +30,8 @@ namespace SceneDisplayer {
             this.PushScene(defaultScene);
 
             this._window = SDL.SDL_CreateWindow(
-                title, 0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT,
+                title, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
+                DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT,
                 SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
             
             SDL.SDL_ShowWindow(this._window);
