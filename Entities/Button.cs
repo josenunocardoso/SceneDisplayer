@@ -35,7 +35,11 @@ namespace SceneDisplayer.Entities
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
                 new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 }, false));
             
-            this.WindowResize += this.OnWindowSizeChanged;
+            this.PropertyChanged += (o, e) => {
+                if (e.PropertyName == "Area") {
+                    (this.Children["Rectangle"] as FillRectangle).Area = this.Area;
+                }
+            };
         }
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
@@ -63,8 +67,11 @@ namespace SceneDisplayer.Entities
             }
         }
     
-        private void OnWindowSizeChanged(object sender, WindowArgs args) {
-            this.textSize = TextEntity.GetTextSize(this.Text, this.Font, this.FontSize);
+        public void UpdateText(string text, string font, int fontSize) {
+            var textEntity = this.Children["Text"] as TextEntity;
+            textEntity.Text = text;
+            textEntity.Font = font;
+            textEntity.FontSize = fontSize;
         }
     }
 

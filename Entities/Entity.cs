@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
 using SceneDisplayer.Utils;
@@ -97,14 +98,24 @@ namespace SceneDisplayer.Entities {
     }
 
     public abstract class RectangularEntity : Entity, IClickable {
+        private RectF area;
 
         protected RectangularEntity(RectF area, bool relativeToScreenSize) : base(relativeToScreenSize) {
             this.Area = area;
         }
 
 
-        public RectF Area { get; set; }
+        public RectF Area {
+            get {
+                return this.area;
+            } set {
+                this.area = value;
+                this.OnPropertyChanged("Area");
+            }
+        }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public event EventHandler<ClickArgs> Click;
 
@@ -112,6 +123,9 @@ namespace SceneDisplayer.Entities {
             this.Click?.Invoke(this, args);
         }
 
+        private void OnPropertyChanged(string propertyName) {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         protected SDL.SDL_Rect GetAbsoluteArea(int screenWidth, int screenHeight) {
             return this.RelativeToScreenSize
                 ? new SDL.SDL_Rect {

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using SDL2;
 using SceneDisplayer.Entities;
-using SceneDisplayer.Utils;
 
 namespace SceneDisplayer {
     public class SceneManager : IDisposable {
+        private const int FPS = 120;
         private readonly int DEFAULT_SCREEN_WIDTH = 1000;
         private readonly int DEFAULT_SCREEN_HEIGHT = 600;
         private readonly SDL.SDL_Color BACKGROUND_COLOR = new SDL.SDL_Color { r = 32, g = 64, b = 128 };
+        private const uint DELAY_TIME = (uint)(1000f / FPS);
 
 
         public SceneManager() {
@@ -59,6 +60,7 @@ namespace SceneDisplayer {
 
         public void Render() {
             bool running = true;
+            uint frameStartTime = SDL.SDL_GetTicks();
 
             while (running) {
                 SDL.SDL_SetRenderDrawColor(this._renderer,
@@ -98,6 +100,14 @@ namespace SceneDisplayer {
                         }
                     }
                 }
+
+                int delaytime = (int)(DELAY_TIME - (SDL.SDL_GetTicks() - frameStartTime));
+
+                if (delaytime > 0) {
+                    SDL.SDL_Delay((uint)delaytime);
+                }
+                
+                frameStartTime = SDL.SDL_GetTicks();
             }
 
             SDL.SDL_Quit();

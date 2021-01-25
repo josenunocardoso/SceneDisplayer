@@ -21,11 +21,11 @@ namespace SceneDisplayer.Entities {
 
         private static Dictionary<FontCharacteristics, (IntPtr, int, int)> CachedBitmapFonts { get; set; }
 
-        public string Text { get; }
+        public string Text { get; set; }
 
-        public string Font { get; }
+        public string Font { get; set; }
 
-        public int FontSize { get; }
+        public int FontSize { get; set; }
 
         public PointF Location { get; set; }
 
