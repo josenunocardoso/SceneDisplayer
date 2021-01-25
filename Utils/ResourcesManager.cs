@@ -9,21 +9,9 @@ namespace SceneDisplayer.Utils {
             CachedTextures = new Dictionary<string, IntPtr>();
         }
 
+
         public static Dictionary<string, IntPtr> CachedTextures { get; }
 
-        /*public static IntPtr GetTexture(IntPtr renderer, string path) {
-
-            if (!CachedTextures.ContainsKey(path)) {
-                string apppath = GetAppPath();
-
-                var surface = GetImage(os.path.join(apppath, f"resources/{path}"));
-                var texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
-
-                CachedTextures[path] = texture;
-            }
-            
-            return CachedTextures[path];
-        }*/
 
         public static (IntPtr, int, int) GetBitmapTexture(IntPtr renderer,
         string text, int fontSize, string font, SDL.SDL_Color color) {

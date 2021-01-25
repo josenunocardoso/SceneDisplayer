@@ -30,18 +30,28 @@ namespace SceneDisplayer.Entities {
         public PointF Location { get; set; }
 
 
-        private static void CreateBitmapFont(IntPtr renderer, string text, string font, int fontSize, FontCharacteristics key) {
+        private static void CreateBitmapFont(IntPtr renderer, FontCharacteristics key) {
             var bitmapFontTexture = ResourcesManager.GetBitmapTexture(renderer,
-                text, fontSize, font, new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
+                key.Text, key.FontSize, key.FontPath, new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
             
             CachedBitmapFonts.Add(key, bitmapFontTexture);
+        }
+
+        public static (int, int) GetTextSize(IntPtr renderer, string text, string font, int fontSize) {
+            var key = new FontCharacteristics(text, font, fontSize);
+
+            if (!CachedBitmapFonts.ContainsKey(key)) {
+                CreateBitmapFont(renderer, key);
+            }
+
+            return (CachedBitmapFonts[key].Item2, CachedBitmapFonts[key].Item3);
         }
 
         public static (int, int) GetTextSize(string text, string font, int fontSize) {
             var key = new FontCharacteristics(text, font, fontSize);
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
-                return (-1, -1);
+                throw new ArgumentException("No such cached BitmapFont");
             }
 
             return (CachedBitmapFonts[key].Item2, CachedBitmapFonts[key].Item3);
@@ -49,11 +59,13 @@ namespace SceneDisplayer.Entities {
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
+
+            if (this.Font == null) return;
             
             var key = new FontCharacteristics(this.Text, this.Font, this.FontSize);
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
-                CreateBitmapFont(renderer, this.Text, this.Font, this.FontSize, key);
+                CreateBitmapFont(renderer, key);
             }
 
             var (bitmapFont, w, h) = CachedBitmapFonts[key];

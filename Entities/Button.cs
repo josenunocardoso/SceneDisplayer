@@ -23,11 +23,11 @@ namespace SceneDisplayer.Entities
 
         public TextAlignment Alignment { get; }
 
-        public string Text { get; }
+        public string Text { get; private set; }
 
-        public string Font { get; }
+        public string Font { get; private set; }
 
-        public int FontSize { get; }
+        public int FontSize { get; private set; }
 
 
         public override void Init() {
@@ -48,7 +48,7 @@ namespace SceneDisplayer.Entities
             var area = this.GetAbsoluteArea(screenWidth, screenHeight);
 
             if (this.textSize == null) {
-                this.textSize = TextEntity.GetTextSize(this.Text, this.Font, this.FontSize);
+                this.textSize = TextEntity.GetTextSize(renderer, this.Text, this.Font, this.FontSize);
             }
 
             var (w, h) = this.textSize.Value;
@@ -72,6 +72,10 @@ namespace SceneDisplayer.Entities
             textEntity.Text = text;
             textEntity.Font = font;
             textEntity.FontSize = fontSize;
+
+            this.Text = text;
+            this.Font = font;
+            this.FontSize = fontSize;
         }
     }
 
