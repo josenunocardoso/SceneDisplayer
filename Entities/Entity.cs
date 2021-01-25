@@ -34,19 +34,6 @@ namespace SceneDisplayer.Entities {
             child.Init();
         }
 
-        public void EditChild(object key, Entity child) {
-            if (child == null) {
-                throw new ArgumentNullException("child");
-            }
-
-            if (!this.Children.ContainsKey(key)) {
-                throw new ArgumentException("Child does not exist");
-            }
-
-            this.Children[key] = child;
-            child.Init();
-        }
-
         public bool RemoveChild(object key) {
             if (!this.Children.ContainsKey(key)) {
                 throw new ArgumentException("Child does not exist");
@@ -59,11 +46,16 @@ namespace SceneDisplayer.Entities {
 
         public void RemoveChildren(Predicate<Entity> pred) {
             foreach (var child in this.Children.Values.Where(c => pred(c))) {
+                child.Dispose();
                 this.RemoveChild(child);
             }
         }
 
         public void ClearChildren() {
+            foreach (var child in this.Children.Values) {
+                child.Dispose();
+            }
+
             this.Children.Clear();
         }
 
@@ -92,6 +84,14 @@ namespace SceneDisplayer.Entities {
                 y = (float)point.y / screenHeight
             };
         }
+
+
+        public event EventHandler<WindowArgs> WindowResize;
+
+        public void OnWindowResize(WindowArgs args) {
+            this.WindowResize?.Invoke(this, args);
+        }
+
 
         public virtual void Dispose() { }
     }
@@ -135,5 +135,11 @@ namespace SceneDisplayer.Entities {
         public int X { get; set; }
 
         public int Y { get; set; }
+    }
+
+    public class WindowArgs : EventArgs {
+        public int Width { get; set; }
+
+        public int Height { get; set; }
     }
 }

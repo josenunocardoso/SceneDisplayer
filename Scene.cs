@@ -21,22 +21,32 @@ namespace SceneDisplayer {
 
         public void OnClick(int x, int y) {
             foreach (var entity in this.Entities) {
-                this.OnClickRec(entity, x, y);
+                this.PerformActionOnAllChildren(entity, child => {
+                    if (child is IClickable) {
+                        var clickable = child as IClickable;
+
+                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y })) {
+                            clickable.OnClick(new ClickArgs { X = x, Y = y });
+                        }
+                    }
+                });
             }
         }
 
-        private void OnClickRec(Entity entity, int x, int y) {
+        public void OnWindowResized(int screenWidth, int screenHeight) {
+            foreach (var entity in this.Entities) {
+                this.PerformActionOnAllChildren(entity, child => {
+                    child.OnWindowResize(new WindowArgs { Width = screenWidth, Height = screenHeight });
+                });
+            }
+        }
+
+        private void PerformActionOnAllChildren(Entity entity, Action<Entity> action) {
             foreach (var child in entity.Children.Values) {
-                this.OnClickRec(child, x, y);
+                this.PerformActionOnAllChildren(child, action);
             }
 
-            if (entity is IClickable) {
-                var clickable = entity as IClickable;
-
-                if (clickable.Contains(new SDL.SDL_Point { x = x, y = y })) {
-                    clickable.OnClick(new ClickArgs { X = x, Y = y });
-                }
-            }
+            action(entity);
         }
 
         public void Dispose() {

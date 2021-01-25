@@ -34,6 +34,8 @@ namespace SceneDisplayer.Entities
             this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.RelativeToScreenSize));
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
                 new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 }, false));
+            
+            this.WindowResize += this.OnWindowSizeChanged;
         }
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
@@ -43,22 +45,26 @@ namespace SceneDisplayer.Entities
 
             if (this.textSize == null) {
                 this.textSize = TextEntity.GetTextSize(this.Text, this.Font, this.FontSize);
+            }
 
-                var (w, h) = this.textSize.Value;
+            var (w, h) = this.textSize.Value;
 
-                switch (this.Alignment) {
-                    case TextAlignment.Center: {
-                        var textEntity = this.Children["Text"] as TextEntity;
+            switch (this.Alignment) {
+                case TextAlignment.Center: {
+                    var textEntity = this.Children["Text"] as TextEntity;
 
-                        textEntity.Location = new PointF {
-                            x = area.x + area.w / 2 - w / 2,
-                            y = area.y + area.h / 2 - h / 2
-                        };
+                    textEntity.Location = new PointF {
+                        x = area.x + area.w / 2 - w / 2,
+                        y = area.y + area.h / 2 - h / 2
+                    };
 
-                        break;
-                    }
+                    break;
                 }
             }
+        }
+    
+        private void OnWindowSizeChanged(object sender, WindowArgs args) {
+            this.textSize = TextEntity.GetTextSize(this.Text, this.Font, this.FontSize);
         }
     }
 

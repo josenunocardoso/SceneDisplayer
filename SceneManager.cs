@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SDL2;
 using SceneDisplayer.Entities;
+using SceneDisplayer.Utils;
 
 namespace SceneDisplayer {
     public class SceneManager : IDisposable {
@@ -15,7 +16,7 @@ namespace SceneDisplayer {
         }
 
 
-        private IntPtr _window;
+        private static IntPtr _window;
         private IntPtr _renderer;
 
         private Stack<Scene> Scenes { get; }
@@ -23,21 +24,27 @@ namespace SceneDisplayer {
         private Scene ActiveScene => this.Scenes.Peek();
 
 
+        public static (int, int) GetWindowSize() {
+            SDL.SDL_GetWindowSize(_window, out int w, out int h);
+
+            return (w, h);
+        }
+
         public void Init(Scene defaultScene, string title) {
             SDL_ttf.TTF_Init();
             SDL.SDL_Init(0);
 
             this.PushScene(defaultScene);
 
-            this._window = SDL.SDL_CreateWindow(
+            _window = SDL.SDL_CreateWindow(
                 title, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
                 DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT,
                 SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
             
-            SDL.SDL_ShowWindow(this._window);
+            SDL.SDL_ShowWindow(_window);
 
             this._renderer = SDL.SDL_CreateRenderer(
-                this._window, -1,
+                _window, -1,
                 SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
         }
 
@@ -54,13 +61,12 @@ namespace SceneDisplayer {
             bool running = true;
 
             while (running) {
-
                 SDL.SDL_SetRenderDrawColor(this._renderer,
                     BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
 
                 SDL.SDL_RenderClear(this._renderer);
 
-                SDL.SDL_GetWindowSize(this._window, out int w, out int h);
+                var (w, h) = GetWindowSize();
 
                 if (this.ActiveScene != null) {
                     foreach (var entity in this.ActiveScene.Entities) {
@@ -84,6 +90,13 @@ namespace SceneDisplayer {
                         
                         break;
                     }
+                    if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT) {
+                        var windowEvent = e.window;
+
+                        if (windowEvent.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESIZED) {
+                            this.WindowResized(windowEvent.data1, windowEvent.data2);
+                        }
+                    }
                 }
             }
 
@@ -96,6 +109,10 @@ namespace SceneDisplayer {
 
         private void MouseLeftDown(int x, int y) {
             this.ActiveScene?.OnClick(x, y);
+        }
+
+        private void WindowResized(int width, int height) {
+            this.ActiveScene?.OnWindowResized(width, height);
         }
 
         public void Dispose() {

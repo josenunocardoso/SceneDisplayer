@@ -38,7 +38,7 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
 
-            var key = new TextureCaracteristics(this.ImagePath, this.Area);
+            var key = new TextureCaracteristics(this.ImagePath);
 
             if (!CachedTextures.ContainsKey(key)) {
                 this.CreateTexture(renderer, key);
@@ -54,11 +54,9 @@ namespace SceneDisplayer.Entities {
 
     public struct TextureCaracteristics {
         public string ImagePath;
-        public RectF Area;
 
-        public TextureCaracteristics(string path, RectF area) {
+        public TextureCaracteristics(string path) {
             this.ImagePath = path;
-            this.Area = area;
         }
     }
 }
