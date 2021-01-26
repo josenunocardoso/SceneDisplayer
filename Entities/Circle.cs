@@ -29,9 +29,11 @@ namespace SceneDisplayer.Entities {
             this.Click?.Invoke(this, args);
         }
 
-        public bool Contains(SDL.SDL_Point point) {
-            return (point.x - this.Center.x) * (point.x - this.Center.x)
-                + (point.y - this.Center.y) * (point.y - this.Center.y) <= this.Radius * this.Radius;
+        public bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight) {
+            var relPt = this.AbsoluteToRelative(point, screenWidth, screenHeight);
+
+            return (relPt.x - this.Center.x) * (relPt.x - this.Center.x)
+                + (relPt.y - this.Center.y) * (relPt.y - this.Center.y) <= this.Radius * this.Radius;
         }
 
 

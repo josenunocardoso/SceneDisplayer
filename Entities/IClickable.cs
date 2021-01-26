@@ -7,6 +7,6 @@ namespace SceneDisplayer.Entities {
 
         void OnClick(ClickArgs args);
 
-        bool Contains(SDL.SDL_Point point);
+        bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight);
     }
 }

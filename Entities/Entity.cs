@@ -79,7 +79,7 @@ namespace SceneDisplayer.Entities {
                 };
         }
 
-        protected PointF GetRelativePoint(SDL.SDL_Point point, int screenWidth, int screenHeight) {
+        protected PointF AbsoluteToRelative(SDL.SDL_Point point, int screenWidth, int screenHeight) {
             return new PointF {
                 x = (float)point.x / screenWidth,
                 y = (float)point.y / screenHeight
@@ -126,6 +126,7 @@ namespace SceneDisplayer.Entities {
         private void OnPropertyChanged(string propertyName) {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        
         protected SDL.SDL_Rect GetAbsoluteArea(int screenWidth, int screenHeight) {
             return this.RelativeToScreenSize
                 ? new SDL.SDL_Rect {
@@ -140,8 +141,27 @@ namespace SceneDisplayer.Entities {
                 };
         }
 
-        public bool Contains(SDL.SDL_Point point) {
-            return this.Area.Contains(point);
+        protected RectF GetRelativeArea(int screenWidth, int screenHeight) {
+            return this.RelativeToScreenSize
+                ? new RectF {
+                    x = this.Area.x - this.Area.w / 2,
+                    y = this.Area.y - this.Area.h / 2,
+                    w = this.Area.w,
+                    h = this.Area.h
+                }
+                : new RectF {
+                    x = this.Area.x / screenWidth,
+                    y = this.Area.y / screenHeight,
+                    w = this.Area.w / screenWidth,
+                    h = this.Area.h / screenHeight
+                };
+        }
+
+        public bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight) {
+            var relPt = this.AbsoluteToRelative(point, screenWidth, screenHeight);
+            var relArea = this.GetRelativeArea(screenWidth, screenHeight);
+
+            return relArea.Contains(relPt);
         }
     }
 

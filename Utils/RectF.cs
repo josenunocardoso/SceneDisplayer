@@ -17,6 +17,17 @@ namespace SceneDisplayer.Utils {
             };
         }
 
+        public bool Contains(SDL.SDL_Point point) {
+            return this.Contains(new PointF {
+                x = point.x, y = point.y
+            });
+        }
+
+        public bool Contains(PointF point) {
+            return point.x >= this.x && point.x <= this.x + this.w
+                && point.y >= this.y && point.y <= this.y + this.h;
+        }
+
         public override string ToString() {
             return $"({x};{y};{w};{h})";
         }

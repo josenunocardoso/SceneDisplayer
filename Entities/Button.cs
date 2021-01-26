@@ -35,7 +35,7 @@ namespace SceneDisplayer.Entities
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
                 new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 }, false));
             
-            this.PropertyChanged += (o, e) => {
+            this.PropertyChanged += (_, e) => {
                 if (e.PropertyName == "Area") {
                     (this.Children["Rectangle"] as FillRectangle).Area = this.Area;
                 }

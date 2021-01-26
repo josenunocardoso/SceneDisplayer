@@ -10,6 +10,7 @@ namespace SceneDisplayer {
             this.Entities = new List<Entity>();
         }
 
+
         public List<Entity> Entities { get; }
 
 
@@ -19,13 +20,13 @@ namespace SceneDisplayer {
             }
         }
 
-        public void OnClick(int x, int y) {
+        public void OnClick(int x, int y, int screenWidth, int screenHeight) {
             foreach (var entity in this.Entities) {
                 this.PerformActionOnAllChildren(entity, child => {
                     if (child is IClickable) {
                         var clickable = child as IClickable;
 
-                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y })) {
+                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y }, screenWidth, screenHeight)) {
                             clickable.OnClick(new ClickArgs { X = x, Y = y });
                         }
                     }
