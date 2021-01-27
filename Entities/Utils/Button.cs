@@ -2,10 +2,9 @@ using System;
 using SDL2;
 using SceneDisplayer.Utils;
 
-namespace SceneDisplayer.Entities
+namespace SceneDisplayer.Entities.Utils
 {
     public class Button : RectangularEntity {
-        private (int, int)? textSize;
 
         public Button(RectF area, SDL.SDL_Color backgroundColor, TextAlignment alignment,
         string text, string font, int fontSize, bool relativeToScreenSize = true)
@@ -15,7 +14,6 @@ namespace SceneDisplayer.Entities
             this.Text = text;
             this.Font = font;
             this.FontSize = fontSize;
-            this.textSize = null;
         }
 
 
@@ -32,8 +30,7 @@ namespace SceneDisplayer.Entities
 
         public override void Init() {
             this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.RelativeToScreenSize));
-            this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
-                new PointF { x = this.Area.x + this.Area.w / 2, y = this.Area.y + this.Area.h / 2 }, false));
+            this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize, new PointF(), false));
             
             this.PropertyChanged += (_, e) => {
                 if (e.PropertyName == "Area") {
@@ -47,24 +44,8 @@ namespace SceneDisplayer.Entities
 
             var area = this.GetAbsoluteArea(screenWidth, screenHeight);
 
-            if (this.textSize == null) {
-                this.textSize = TextEntity.GetTextSize(renderer, this.Text, this.Font, this.FontSize);
-            }
-
-            var (w, h) = this.textSize.Value;
-
-            switch (this.Alignment) {
-                case TextAlignment.Center: {
-                    var textEntity = this.Children["Text"] as TextEntity;
-
-                    textEntity.Location = new PointF {
-                        x = area.x + area.w / 2 - w / 2,
-                        y = area.y + area.h / 2 - h / 2
-                    };
-
-                    break;
-                }
-            }
+            var textEntity = this.Children["Text"] as TextEntity;
+            textEntity.Location = TextEntity.GetTextAbsoluteLocation(this.Alignment, area);
         }
     
         public void UpdateText(string text, string font, int fontSize) {

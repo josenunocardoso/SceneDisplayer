@@ -87,7 +87,20 @@ namespace SceneDisplayer.Entities {
         }
 
 
+        public event EventHandler<ClickArgs> MouseDown;
+
+        public event EventHandler<KeyArgs> KeyDown;
+
         public event EventHandler<WindowArgs> WindowResize;
+
+
+        public void OnMouseDown(ClickArgs args) {
+            this.MouseDown?.Invoke(this, args);
+        }
+
+        public void OnKeyDown(KeyArgs args) {
+            this.KeyDown?.Invoke(this, args);
+        }
 
         public void OnWindowResize(WindowArgs args) {
             this.WindowResize?.Invoke(this, args);
@@ -175,5 +188,9 @@ namespace SceneDisplayer.Entities {
         public int Width { get; set; }
 
         public int Height { get; set; }
+    }
+
+    public class KeyArgs : EventArgs {
+        public SDL.SDL_Keycode Key { get; set; }
     }
 }

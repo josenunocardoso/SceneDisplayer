@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using SDL2;
+using SceneDisplayer.Entities.Utils;
 using SceneDisplayer.Utils;
 
 namespace SceneDisplayer.Entities {
@@ -57,6 +58,19 @@ namespace SceneDisplayer.Entities {
             return (CachedBitmapFonts[key].Item2, CachedBitmapFonts[key].Item3);
         }
 
+        public static PointF GetTextAbsoluteLocation(TextAlignment alignment, SDL.SDL_Rect area) {
+            switch (alignment) {
+                case TextAlignment.Center: {
+                    return new PointF {
+                        x = area.x + area.w / 2,
+                        y = area.y + area.h / 2
+                    };
+                }
+            }
+
+            throw new NotSupportedException("The given TextAlignment is not supported");
+        }
+
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
 
@@ -73,8 +87,8 @@ namespace SceneDisplayer.Entities {
             var loc = this.GetAbsolutePoint(this.Location, screenWidth, screenHeight);
 
             var area = new SDL.SDL_Rect {
-                x = loc.x,
-                y = loc.y,
+                x = loc.x - w / 2,
+                y = loc.y - h / 2,
                 w = w,
                 h = h
             };

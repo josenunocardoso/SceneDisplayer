@@ -89,8 +89,11 @@ namespace SceneDisplayer {
                         if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
                             MouseLeftDown(buttonEvent.x, buttonEvent.y, w, h);
                         }
-                        
-                        break;
+                    }
+                    if (e.type == SDL.SDL_EventType.SDL_KEYDOWN) {
+                        var keyEvent = e.key;
+
+                        KeyDown(keyEvent.keysym.sym);
                     }
                     if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT) {
                         var windowEvent = e.window;
@@ -119,6 +122,10 @@ namespace SceneDisplayer {
 
         private static void MouseLeftDown(int x, int y, int screenWidth, int screenHeight) {
             ActiveScene?.OnClick(x, y, screenWidth, screenHeight);
+        }
+
+        private static void KeyDown(SDL.SDL_Keycode key) {
+            ActiveScene?.OnKeyDown(key);
         }
 
         private static void WindowResized(int width, int height) {

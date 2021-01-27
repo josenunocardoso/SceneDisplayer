@@ -28,8 +28,19 @@ namespace SceneDisplayer {
 
                         if (clickable.Contains(new SDL.SDL_Point { x = x, y = y }, screenWidth, screenHeight)) {
                             clickable.OnClick(new ClickArgs { X = x, Y = y });
+                            return;
                         }
                     }
+
+                    child.OnMouseDown(new ClickArgs { X = x, Y = y });
+                });
+            }
+        }
+
+        public void OnKeyDown(SDL.SDL_Keycode key) {
+            foreach (var entity in this.Entities) {
+                this.PerformActionOnAllChildren(entity, child => {
+                    child.OnKeyDown(new KeyArgs { Key = key });
                 });
             }
         }
