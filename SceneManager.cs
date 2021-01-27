@@ -120,6 +120,11 @@ namespace SceneDisplayer {
             ActiveScene?.Entities.Add(entity);
         }
 
+        public static void ShowMessageBox(SDL.SDL_MessageBoxFlags flags, string title, string message) {
+            SDL.SDL_ShowSimpleMessageBox(flags, title, message, _window);
+        }
+
+
         private static void MouseLeftDown(int x, int y, int screenWidth, int screenHeight) {
             ActiveScene?.OnClick(x, y, screenWidth, screenHeight);
         }
