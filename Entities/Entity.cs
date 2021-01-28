@@ -107,7 +107,11 @@ namespace SceneDisplayer.Entities {
         }
 
 
-        public virtual void Dispose() { }
+        public virtual void Dispose() {
+            foreach (var child in this.Children.Values) {
+                child.Dispose();
+            }
+        }
     }
 
     public abstract class RectangularEntity : Entity, IClickable {

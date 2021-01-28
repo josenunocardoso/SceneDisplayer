@@ -58,6 +58,17 @@ namespace SceneDisplayer {
             ActiveScene.Init();
         }
 
+        public static Scene PopScene() {
+            if (Scenes.Count <= 1) {
+                throw new ArgumentException("Cannot pop the Scene because it is the only one that exists");
+            }
+
+            var popped = Scenes.Pop();
+            popped.Dispose();
+
+            return popped;
+        }
+
         public static void Render() {
             bool running = true;
             uint frameStartTime = SDL.SDL_GetTicks();

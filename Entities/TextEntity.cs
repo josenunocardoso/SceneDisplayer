@@ -8,6 +8,7 @@ namespace SceneDisplayer.Entities {
     public class TextEntity : Entity {
         
         static TextEntity() {
+            CachedBitmapFontsCount = new Dictionary<FontCharacteristics, int>();
             CachedBitmapFonts = new Dictionary<FontCharacteristics, (IntPtr, int, int)>();
         }
 
@@ -17,8 +18,11 @@ namespace SceneDisplayer.Entities {
             this.Font = font;
             this.FontSize = fontSize;
             this.Location = location;
+            this.CachedKeys = new Queue<FontCharacteristics>();
         }
 
+
+        private static Dictionary<FontCharacteristics, int> CachedBitmapFontsCount { get; set; }
 
         private static Dictionary<FontCharacteristics, (IntPtr, int, int)> CachedBitmapFonts { get; set; }
 
@@ -30,22 +34,20 @@ namespace SceneDisplayer.Entities {
 
         public PointF Location { get; set; }
 
+        private Queue<FontCharacteristics> CachedKeys { get; set; }
+
 
         private static void CreateBitmapFont(IntPtr renderer, FontCharacteristics key) {
             var bitmapFontTexture = ResourcesManager.GetBitmapTexture(renderer,
                 key.Text, key.FontSize, key.FontPath, new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
             
             CachedBitmapFonts.Add(key, bitmapFontTexture);
-        }
-
-        public static (int, int) GetTextSize(IntPtr renderer, string text, string font, int fontSize) {
-            var key = new FontCharacteristics(text, font, fontSize);
-
-            if (!CachedBitmapFonts.ContainsKey(key)) {
-                CreateBitmapFont(renderer, key);
+            if (!CachedBitmapFontsCount.ContainsKey(key)) {
+                CachedBitmapFontsCount.Add(key, 1);
             }
-
-            return (CachedBitmapFonts[key].Item2, CachedBitmapFonts[key].Item3);
+            else {
+                CachedBitmapFontsCount[key]++;
+            }
         }
 
         public static (int, int) GetTextSize(string text, string font, int fontSize) {
@@ -80,6 +82,12 @@ namespace SceneDisplayer.Entities {
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
                 CreateBitmapFont(renderer, key);
+                this.CachedKeys.Enqueue(key);
+            }
+
+            if (!this.CachedKeys.Contains(key)) {
+                this.CachedKeys.Enqueue(key);
+                CachedBitmapFontsCount[key]++;
             }
 
             var (bitmapFont, w, h) = CachedBitmapFonts[key];
@@ -95,6 +103,17 @@ namespace SceneDisplayer.Entities {
 
             SDL.SDL_RenderCopy(renderer, bitmapFont, IntPtr.Zero, ref area);
         }
+
+        public override void Dispose() {
+            base.Dispose();
+
+            foreach (var key in this.CachedKeys) {
+                if (--CachedBitmapFontsCount[key] <= 0) {
+                    CachedBitmapFontsCount.Remove(key);
+                    CachedBitmapFonts.Remove(key);
+                }
+            }
+        }
     }
 
     public struct FontCharacteristics {
@@ -106,6 +125,11 @@ namespace SceneDisplayer.Entities {
             this.Text = text;
             this.FontPath = font;
             this.FontSize = size;
+        }
+
+
+        public override string ToString() {
+            return $"{this.Text}; {this.FontPath}; {this.FontSize}";
         }
     }
 }

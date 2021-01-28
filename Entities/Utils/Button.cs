@@ -30,11 +30,13 @@ namespace SceneDisplayer.Entities.Utils
 
         public override void Init() {
             this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.RelativeToScreenSize));
+            this.AddChild("Border", new Rectangle(this.Area, new SDL.SDL_Color(), this.RelativeToScreenSize));
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize, new PointF(), false));
             
             this.PropertyChanged += (_, e) => {
                 if (e.PropertyName == "Area") {
                     (this.Children["Rectangle"] as FillRectangle).Area = this.Area;
+                    (this.Children["Border"] as Rectangle).Area = this.Area;
                 }
             };
         }
