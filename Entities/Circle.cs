@@ -3,8 +3,20 @@ using SceneDisplayer.Utils;
 using SDL2;
 
 namespace SceneDisplayer.Entities {
+    /// <summary>
+    /// An <see cref="Entity"/> that renders a circle.
+    /// </summary>
     public class Circle : Entity, IClickable {
         
+        /// <summary>
+        /// Constructs a <c>Circle</c>.
+        /// </summary>
+        /// <param name="center">The center of the <c>Circle</c>.</param>
+        /// <param name="radius">The radius of the <c>Circle</c>.</param>
+        /// <param name="color">The color of the <c>Circle</c>.</param>
+        /// <param name="sides">The number of sides the <c>Circle</c> has. 10 by default.</param>
+        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
+        /// False, to consider absolute positions, in pixels.</param>
         public Circle(PointF center, float radius, SDL.SDL_Color color, int sides = 10, bool relativeToScreenSize = true)
         : base(relativeToScreenSize) {
             this.Center = center;
@@ -14,12 +26,24 @@ namespace SceneDisplayer.Entities {
         }
 
 
+        /// <summary>
+        /// The center of the <c>Circle</c>.
+        /// </summary>
         public PointF Center { get; set; }
 
+        /// <summary>
+        /// The radius of the <c>Circle</c>.
+        /// </summary>
         public float Radius { get; set; }
 
+        /// <summary>
+        /// The color of the <c>Circle</c>.
+        /// </summary>
         public SDL.SDL_Color Color { get; set; }
 
+        /// <summary>
+        /// The number of sides of the <c>Circle</c>.
+        /// </summary>
         public int Sides { get; set; }
 
 

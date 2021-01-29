@@ -4,8 +4,22 @@ using SceneDisplayer.Utils;
 
 namespace SceneDisplayer.Entities.Utils
 {
+    /// <summary>
+    /// An <see cref="Entity"/> that renders a button.
+    /// </summary>
     public class Button : RectangularEntity {
 
+        /// <summary>
+        /// Constructs a <c>Button</c>.
+        /// </summary>
+        /// <param name="area">The area of the <c>Button</c>.</param>
+        /// <param name="backgroundColor">The background color of the <c>Button</c>.</param>
+        /// <param name="alignment">The text alignment of the <c>Button</c>.</param>
+        /// <param name="text">The text of the <c>Button</c>.</param>
+        /// <param name="font">The font path of the <c>Button</c>.</param>
+        /// <param name="fontSize">The font size of the <c>Button</c>.</param>
+        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
+        /// False, to consider absolute positions, in pixels.</param>
         public Button(RectF area, SDL.SDL_Color backgroundColor, TextAlignment alignment,
         string text, string font, int fontSize, bool relativeToScreenSize = true)
         : base(area, relativeToScreenSize) {
@@ -17,14 +31,29 @@ namespace SceneDisplayer.Entities.Utils
         }
 
 
+        /// <summary>
+        /// The background color of the <c>Button</c>.
+        /// </summary>
         public SDL.SDL_Color BackgroundColor { get; set; }
 
+        /// <summary>
+        /// The text alignment of the <c>Button</c>.
+        /// </summary>
         public TextAlignment Alignment { get; }
 
+        /// <summary>
+        /// The text of the <c>Button</c>.
+        /// </summary>
         public string Text { get; private set; }
 
+        /// <summary>
+        /// The font path of the <c>Button</c>.
+        /// </summary>
         public string Font { get; private set; }
 
+        /// <summary>
+        /// The font size of the <c>Button</c>.
+        /// </summary>
         public int FontSize { get; private set; }
 
 
@@ -50,6 +79,12 @@ namespace SceneDisplayer.Entities.Utils
             textEntity.Location = TextEntity.GetTextAbsoluteLocation(this.Alignment, area);
         }
     
+        /// <summary>
+        /// Updates the text of this <c>Button</c>.
+        /// </summary>
+        /// <param name="text">The new text.</param>
+        /// <param name="font">The new font path.</param>
+        /// <param name="fontSize">The new font size.</param>
         public void UpdateText(string text, string font, int fontSize) {
             var textEntity = this.Children["Text"] as TextEntity;
             textEntity.Text = text;
@@ -60,9 +95,5 @@ namespace SceneDisplayer.Entities.Utils
             this.Font = font;
             this.FontSize = fontSize;
         }
-    }
-
-    public enum TextAlignment {
-        Center
     }
 }

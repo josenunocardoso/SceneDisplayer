@@ -4,6 +4,9 @@ using SDL2;
 using SceneDisplayer.Entities;
 
 namespace SceneDisplayer {
+    /// <summary>
+    /// Main class, responsible to manage the active scenes and to render them.
+    /// </summary>
     public static class SceneManager {
         private const int FPS = 120;
         private const int DEFAULT_SCREEN_WIDTH = 1000;
@@ -25,12 +28,23 @@ namespace SceneDisplayer {
         private static Scene ActiveScene => Scenes.Peek();
 
 
+        /// <summary>
+        /// Retrieves the current window size.
+        /// </summary>
+        /// <returns>A tuple with the width and the height, in pixels, respectively.</returns>
         public static (int, int) GetWindowSize() {
             SDL.SDL_GetWindowSize(_window, out int w, out int h);
 
             return (w, h);
         }
 
+        /// <summary>
+        /// Initializes the necessary resources to create a window and a renderer.
+        /// Must be called before <see cref="Render"/>
+        /// </summary>
+        /// <param name="defaultScene">The initial <see cref="Scene"/> to be displayed.
+        /// It is set as the <see cref="ActiveScene"/></param>
+        /// <param name="title">The title of the window.</param>
         public static void Init(Scene defaultScene, string title) {
             SDL_ttf.TTF_Init();
             SDL.SDL_Init(0);
@@ -49,6 +63,11 @@ namespace SceneDisplayer {
                 SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
         }
 
+        /// <summary>
+        /// Pushes a new <see cref="Scene"/> to the Stack, and initializes it.
+        /// The given <see cref="Scene"/> is set as the <see cref="ActiveScene"/>.
+        /// </summary>
+        /// <param name="scene">The <see cref="Scene"/> to push.</param>
         public static void PushScene(Scene scene) {
             if (scene == null) {
                 throw new ArgumentNullException("scene");
@@ -58,6 +77,12 @@ namespace SceneDisplayer {
             ActiveScene.Init();
         }
 
+        /// <summary>
+        /// Pops the <see cref="ActiveScene"/> from the Stack, and disposes it.
+        /// The previous <see cref="Scene"/> is set as the <see cref="ActiveScene"/>.
+        /// </summary>
+        /// <returns>The <see cref="Scene"/> that got popped.</returns>
+        /// <exception>Throws an <see cref="ArgumentException"/> if there is only one <see cref="Scene"/> in the Stack.</exception>
         public static Scene PopScene() {
             if (Scenes.Count <= 1) {
                 throw new ArgumentException("Cannot pop the Scene because it is the only one that exists");
@@ -69,6 +94,10 @@ namespace SceneDisplayer {
             return popped;
         }
 
+        /// <summary>
+        /// Blocking method, that renders the <see cref="ActiveScene"/> and triggers events.
+        /// This method exits when the window is closed.
+        /// </summary>
         public static void Render() {
             bool running = true;
             uint frameStartTime = SDL.SDL_GetTicks();
@@ -127,10 +156,20 @@ namespace SceneDisplayer {
             SDL.SDL_Quit();
         }
 
+        /// <summary>
+        /// Adds a new <see cref="Entity"/> to the <see cref="ActiveScene"/>.
+        /// </summary>
+        /// <param name="entity"><see cref="Entity"/> to be added.</param>
         public static void AddEntityToActiveScene(Entity entity) {
             ActiveScene?.Entities.Add(entity);
         }
 
+        /// <summary>
+        /// Displays a MessageBox on the active window.
+        /// </summary>
+        /// <param name="flags"><see cref="SDL.SDL_MessageBoxFlags"/>.</param>
+        /// <param name="title">Title of the MessageBox.</param>
+        /// <param name="message">Message of the MessageBox.</param>
         public static void ShowMessageBox(SDL.SDL_MessageBoxFlags flags, string title, string message) {
             SDL.SDL_ShowSimpleMessageBox(flags, title, message, _window);
         }
@@ -148,6 +187,9 @@ namespace SceneDisplayer {
             ActiveScene?.OnWindowResized(width, height);
         }
 
+        /// <summary>
+        /// Disposes all the <c>Scenes</c>.
+        /// </summary>
         public static void Dispose() {
             foreach (var scene in Scenes) {
                 scene.Dispose();
