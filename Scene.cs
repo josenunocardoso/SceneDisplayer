@@ -19,12 +19,25 @@ namespace SceneDisplayer {
 
 
         /// <summary>
+        /// Event triggered at each frame the Scene is active.
+        /// </summary>
+        public event EventHandler Update;
+
+
+        /// <summary>
         /// Initializes all the <c>Entities</c> and their children, recursively.
         /// </summary>
         public void Init() {
             foreach (var entity in this.Entities) {
                 entity.Init();
             }
+        }
+
+        /// <summary>
+        /// Triggers an <c>Update</c> event to the <c>Scene</c>.
+        /// </summary>
+        public void OnUpdate() {
+            this.Update?.Invoke(this, null);
         }
 
         /// <summary>

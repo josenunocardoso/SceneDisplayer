@@ -114,6 +114,7 @@ namespace SceneDisplayer {
                     foreach (var entity in ActiveScene.Entities) {
                         entity.Draw(_renderer, w, h);
                     }
+                    ActiveScene.OnUpdate();
                 }
 
                 SDL.SDL_RenderPresent(_renderer);
