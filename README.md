@@ -1,6 +1,6 @@
 # SceneDisplayer
 
-The Scene Displayer Library is built on top of [SDL](https://www.sdl.com/). It allows to easily render scenes and objects in C#. Since it is built on top of [SDL](https://www.sdl.com/), the library target Windows, MacOS and Linux.
+The Scene Displayer Library is built on top of [SDL](https://www.sdl.com/). It allows to easily render scenes and objects in C#. Since it is built on top of [SDL](https://www.sdl.com/), the library targets Windows, MacOS and Linux.
 
 The main purpose of this project is to make it simple to render multiple scenes, by abstracting the SDL rendering logic.
 
