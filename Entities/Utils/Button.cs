@@ -78,6 +78,14 @@ namespace SceneDisplayer.Entities.Utils
             var textEntity = this.Children["Text"] as TextEntity;
             textEntity.Location = TextEntity.GetTextAbsoluteLocation(this.Alignment, area);
         }
+
+        /// <summary>
+        /// Updates the text of this <c>Button</c>.
+        /// </summary>
+        /// <param name="text">The new text.</param>
+        public void UpdateText(string text) {
+            this.UpdateText(text, this.Font, this.FontSize);
+        }
     
         /// <summary>
         /// Updates the text of this <c>Button</c>.
