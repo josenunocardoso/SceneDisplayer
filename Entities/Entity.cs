@@ -50,7 +50,7 @@ namespace SceneDisplayer.Entities {
         /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the <c>child</c> already exists.</exception>
         public void AddChild(object key, Entity child) {
             if (child == null) {
-                throw new ArgumentNullException("child");
+                throw new ArgumentNullException(nameof(child));
             }
 
             if (this.Children.ContainsKey(key)) {

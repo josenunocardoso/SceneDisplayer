@@ -70,7 +70,7 @@ namespace SceneDisplayer {
         /// <param name="scene">The <see cref="Scene"/> to push.</param>
         public static void PushScene(Scene scene) {
             if (scene == null) {
-                throw new ArgumentNullException("scene");
+                throw new ArgumentNullException(nameof(scene));
             }
 
             Scenes.Push(scene);
