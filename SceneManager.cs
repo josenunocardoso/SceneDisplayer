@@ -39,6 +39,16 @@ namespace SceneDisplayer {
         }
 
         /// <summary>
+        /// Retrieves the current mouse position.
+        /// </summary>
+        /// <returns>A tuple with the X location and the Y location, in pixels, respectively.</returns>
+        public static (int, int) GetMousePosition() {
+            SDL.SDL_GetMouseState(out int w, out int h);
+
+            return (w, h);
+        }
+
+        /// <summary>
         /// Initializes the necessary resources to create a window and a renderer.
         /// Must be called before <see cref="Render"/>
         /// </summary>
@@ -131,6 +141,13 @@ namespace SceneDisplayer {
                             MouseLeftDown(buttonEvent.x, buttonEvent.y, w, h);
                         }
                     }
+                    if (e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONUP) {
+                        var buttonEvent = e.button;
+
+                        if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
+                            MouseLeftUp(buttonEvent.x, buttonEvent.y, w, h);
+                        }
+                    }
                     if (e.type == SDL.SDL_EventType.SDL_KEYDOWN) {
                         var keyEvent = e.key;
 
@@ -178,6 +195,10 @@ namespace SceneDisplayer {
 
         private static void MouseLeftDown(int x, int y, int screenWidth, int screenHeight) {
             ActiveScene?.OnClick(x, y, screenWidth, screenHeight);
+        }
+
+        private static void MouseLeftUp(int x, int y, int screenWidth, int screenHeight) {
+            ActiveScene?.OnMouseUp(x, y, screenWidth, screenHeight);
         }
 
         private static void KeyDown(SDL.SDL_Keycode key) {

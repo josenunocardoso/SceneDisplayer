@@ -154,6 +154,8 @@ namespace SceneDisplayer.Entities {
 
         public event EventHandler<ClickArgs> MouseDown;
 
+        public event EventHandler<ClickArgs> MouseUp;
+
         public event EventHandler<KeyArgs> KeyDown;
 
         public event EventHandler<WindowArgs> WindowResize;
@@ -161,6 +163,10 @@ namespace SceneDisplayer.Entities {
 
         public void OnMouseDown(ClickArgs args) {
             this.MouseDown?.Invoke(this, args);
+        }
+
+        public void OnMouseUp(ClickArgs args) {
+            this.MouseUp?.Invoke(this, args);
         }
 
         public void OnKeyDown(KeyArgs args) {

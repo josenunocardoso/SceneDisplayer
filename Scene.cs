@@ -66,6 +66,21 @@ namespace SceneDisplayer {
         }
 
         /// <summary>
+        /// Triggers a <c>MouseUp</c> event to all the <c>Entities</c>.
+        /// </summary>
+        /// <param name="x">Mouse Location X.</param>
+        /// <param name="y">Mouse Location Y.</param>
+        /// <param name="screenWidth">Screen width in pixels.</param>
+        /// <param name="screenHeight">Screen height in pixels.</param>
+        public void OnMouseUp(int x, int y, int screenWidth, int screenHeight) {
+            foreach (var entity in this.Entities) {
+                this.PerformActionOnAllChildren(entity, child => {
+                    child.OnMouseUp(new ClickArgs { X = x, Y = y });
+                });
+            }
+        }
+
+        /// <summary>
         /// Triggers a <c>KeyDown</c> event to all the <c>Entities</c>.
         /// </summary>
         /// <param name="key">Key pressed.</param>
