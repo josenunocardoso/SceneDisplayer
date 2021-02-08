@@ -213,7 +213,7 @@ namespace SceneDisplayer.Entities {
                 return this.area;
             } set {
                 this.area = value;
-                this.OnPropertyChanged("Area");
+                this.OnPropertyChanged(nameof(this.Area));
             }
         }
 
