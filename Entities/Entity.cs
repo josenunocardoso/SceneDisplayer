@@ -226,7 +226,11 @@ namespace SceneDisplayer.Entities {
             this.Click?.Invoke(this, args);
         }
 
-        private void OnPropertyChanged(string propertyName) {
+        /// <summary>
+        /// Should be called to trigger the <see cref="PropertyChanged" event./>
+        /// </summary>
+        /// <param name="propertyName">The name of the property that was changed.</param>
+        protected void OnPropertyChanged(string propertyName) {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         

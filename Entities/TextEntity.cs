@@ -20,14 +20,17 @@ namespace SceneDisplayer.Entities {
         /// <param name="text">The text to be rendered.</param>
         /// <param name="font">The font path (e.g. a ttf file)</param>
         /// <param name="fontSize">The font size.</param>
+        /// <param name="textColor">The text color.</param>
         /// <param name="location">The location of this <c>Entity</c></param>
         /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
         /// False, to consider absolute positions, in pixels.</param>
-        public TextEntity(string text, string font, int fontSize, PointF location, bool relativeToScreenSize = true)
+        public TextEntity(string text, string font, int fontSize, Color textColor,
+        PointF location, bool relativeToScreenSize = true)
         : base(relativeToScreenSize) {
             this.Text = text;
             this.Font = font;
             this.FontSize = fontSize;
+            this.TextColor = textColor;
             this.Location = location;
             this.CachedKeys = new Queue<FontCharacteristics>();
         }
@@ -59,6 +62,11 @@ namespace SceneDisplayer.Entities {
         public int FontSize { get; set; }
 
         /// <summary>
+        /// The text color.
+        /// </summary>
+        public Color TextColor { get; set; }
+
+        /// <summary>
         /// The location of the <c>Entity</c>.
         /// </summary>
         public PointF Location { get; set; }
@@ -68,7 +76,7 @@ namespace SceneDisplayer.Entities {
 
         private static void CreateBitmapFont(IntPtr renderer, FontCharacteristics key) {
             var bitmapFontTexture = ResourcesManager.GetTextBitmap(renderer,
-                key.Text, key.FontPath, key.FontSize, new SDL.SDL_Color { r = 0x00, g = 0x00, b = 0x00 });
+                key.text, key.fontPath, key.fontSize, key.color.ToSDLColor());
             
             CachedBitmapFonts.Add(key, bitmapFontTexture);
             if (!CachedBitmapFontsCount.ContainsKey(key)) {
@@ -85,9 +93,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="text">Text.</param>
         /// <param name="font">Font path.</param>
         /// <param name="fontSize">Font size.</param>
+        /// <param name="textColor">Text color.</param>
         /// <returns>A tuple with the width and the height of the template, respectively.</returns>
-        public static (int, int) GetTextSize(string text, string font, int fontSize) {
-            var key = new FontCharacteristics(text, font, fontSize);
+        public static (int, int) GetTextSize(string text, string font, int fontSize, Color textColor) {
+            var key = new FontCharacteristics(text, font, fontSize, textColor);
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
                 throw new ArgumentException("No such cached BitmapFont");
@@ -120,7 +129,7 @@ namespace SceneDisplayer.Entities {
 
             if (this.Font == null) return;
             
-            var key = new FontCharacteristics(this.Text, this.Font, this.FontSize);
+            var key = new FontCharacteristics(this.Text, this.Font, this.FontSize, this.TextColor);
 
             if (!CachedBitmapFonts.ContainsKey(key)) {
                 CreateBitmapFont(renderer, key);
@@ -166,19 +175,21 @@ namespace SceneDisplayer.Entities {
     }
 
     struct FontCharacteristics {
-        public string Text;
-        public string FontPath;
-        public int FontSize;
+        public string text;
+        public string fontPath;
+        public int fontSize;
+        public Color color;
 
-        public FontCharacteristics(string text, string font, int size) {
-            this.Text = text;
-            this.FontPath = font;
-            this.FontSize = size;
+        public FontCharacteristics(string text, string font, int size, Color color) {
+            this.text = text;
+            this.fontPath = font;
+            this.fontSize = size;
+            this.color = color;
         }
 
 
         public override string ToString() {
-            return $"{this.Text}; {this.FontPath}; {this.FontSize}";
+            return $"{this.text}; {this.fontPath}; {this.fontSize}; {this.color}";
         }
     }
 }

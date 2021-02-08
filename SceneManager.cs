@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SDL2;
 using SceneDisplayer.Entities;
+using SceneDisplayer.Utils;
 
 namespace SceneDisplayer {
     /// <summary>
@@ -11,7 +12,6 @@ namespace SceneDisplayer {
         private const int FPS = 120;
         private const int DEFAULT_SCREEN_WIDTH = 1000;
         private const int DEFAULT_SCREEN_HEIGHT = 600;
-        private static readonly SDL.SDL_Color BACKGROUND_COLOR = new SDL.SDL_Color { r = 32, g = 64, b = 128 };
         private const uint DELAY_TIME = (uint)(1000f / FPS);
 
 
@@ -22,11 +22,20 @@ namespace SceneDisplayer {
  
         private static IntPtr _window;
         private static IntPtr _renderer;
+        private static SDL.SDL_Color _backgroundColor = new SDL.SDL_Color { r = 32, g = 64, b = 128 };
  
         private static Stack<Scene> Scenes { get; }
          
         private static Scene ActiveScene => Scenes.Peek();
 
+
+        /// <summary>
+        /// Sets a new backgound color.
+        /// </summary>
+        /// <param name="color">The new color.</param>
+        public static void SetBackgroundColor(Color color) {
+            _backgroundColor = color.ToSDLColor();
+        }
 
         /// <summary>
         /// Retrieves the current window size.
@@ -114,7 +123,7 @@ namespace SceneDisplayer {
 
             while (running) {
                 SDL.SDL_SetRenderDrawColor(_renderer,
-                    BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
+                    _backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _backgroundColor.a);
 
                 SDL.SDL_RenderClear(_renderer);
 
@@ -185,11 +194,11 @@ namespace SceneDisplayer {
         /// <summary>
         /// Displays a MessageBox on the active window.
         /// </summary>
-        /// <param name="flags"><see cref="SDL.SDL_MessageBoxFlags"/>.</param>
+        /// <param name="flags"><see cref="MessageBoxFlags"/>.</param>
         /// <param name="title">Title of the MessageBox.</param>
         /// <param name="message">Message of the MessageBox.</param>
-        public static void ShowMessageBox(SDL.SDL_MessageBoxFlags flags, string title, string message) {
-            SDL.SDL_ShowSimpleMessageBox(flags, title, message, _window);
+        public static void ShowMessageBox(MessageBoxFlags flags, string title, string message) {
+            SDL.SDL_ShowSimpleMessageBox((SDL.SDL_MessageBoxFlags)flags, title, message, _window);
         }
 
 
@@ -217,5 +226,12 @@ namespace SceneDisplayer {
                 scene.Dispose();
             }
         }
+    }
+
+    [Flags]
+    public enum MessageBoxFlags : uint {
+        MESSAGEBOX_ERROR = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+        MESSAGEBOX_WARNING = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_WARNING,
+        MESSAGEBOX_INFORMATION = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_INFORMATION
     }
 }

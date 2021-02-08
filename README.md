@@ -12,6 +12,7 @@ The library is intended to be used for:
 
 - 2D Graphical applications developed relatively quickly and easily.
 - 2D Graphical applications that use mostly the Entities defined by the library, or a mix of them.
+- 2D Games.
 - Simple slideshows.
 - Applications developed in C#, for Desktop.
 

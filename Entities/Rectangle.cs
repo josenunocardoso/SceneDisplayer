@@ -15,7 +15,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="color">The color of the <c>Rectangle</c>.</param>
         /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
         /// False, to consider absolute positions, in pixels.</param>
-        public Rectangle(RectF area, SDL.SDL_Color color, bool relativeToScreenSize = true)
+        public Rectangle(RectF area, Color color, bool relativeToScreenSize = true)
         : base(area, relativeToScreenSize) {
             this.Color = color;
         }
@@ -24,7 +24,7 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// The color of the <c>Rectangle</c>.
         /// </summary>
-        public SDL.SDL_Color Color { get; set; }
+        public Color Color { get; set; }
 
 
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
