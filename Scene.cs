@@ -1,7 +1,7 @@
 using SDL2;
-using SceneDisplayer.Entities;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using SceneDisplayer.Entities;
 
 namespace SceneDisplayer {
     /// <summary>

@@ -7,6 +7,7 @@ namespace SceneDisplayer.Entities.Utils {
     /// An <see cref="Entity"/> that renders a button.
     /// </summary>
     public class Button : RectangularEntity {
+        private Color _backgroundColor;
 
         /// <summary>
         /// Constructs a <c>Button</c>.
@@ -35,7 +36,15 @@ namespace SceneDisplayer.Entities.Utils {
         /// <summary>
         /// The background color of the <c>Button</c>.
         /// </summary>
-        public Color BackgroundColor { get; set; }
+        public Color BackgroundColor {
+            get {
+                return this._backgroundColor;
+            }
+            set {
+                this._backgroundColor = value;
+                this.OnPropertyChanged(nameof(this.BackgroundColor));
+            }
+        }
 
         /// <summary>
         /// The text alignment of the <c>Button</c>.
@@ -69,9 +78,12 @@ namespace SceneDisplayer.Entities.Utils {
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize, this.TextColor, new PointF(), false));
             
             this.PropertyChanged += (_, e) => {
-                if (e.PropertyName == "Area") {
+                if (e.PropertyName == nameof(this.Area)) {
                     (this.Children["Rectangle"] as FillRectangle).Area = this.Area;
                     (this.Children["Border"] as Rectangle).Area = this.Area;
+                }
+                if (e.PropertyName == nameof(this.BackgroundColor)) {
+                    (this.Children["Rectangle"] as FillRectangle).Color = this.BackgroundColor;
                 }
             };
         }
