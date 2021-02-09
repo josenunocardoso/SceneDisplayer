@@ -24,8 +24,65 @@ The library is not intended to be used for:
 
 ## Dependencies
 
-TODO
+[.Net 5.0 SDK](https://dotnet.microsoft.com/download)
 
-## Examples
+#### SDL2 Runtime Binaries
+- [SDL2](https://www.libsdl.org/download-2.0.php)
+- [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
+- [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
 
-TODO
+## Getting started
+
+- Create a new console application:
+  <details>
+    <summary>With Visual Studio</summary>
+
+    Create a new Project -> Console App
+  </details>
+
+  <details>
+    <summary>With CLI</summary>
+
+    ```
+    dotnet new console
+    ```
+
+  </details>
+
+ - Install the [Nuget package](https://www.nuget.org/packages/Cardoso.SceneDisplayer/)
+ 
+ - Add the SDL2 binaries to the build:
+ 
+  - Create a folder on the project folder that was created. In this example we will call the folder "lib".
+  
+  - Copy all the SDL2 Runtime Binaries to this folder.
+  
+  - Automatically copy those binaries to the output folder, after build time:
+    <details>
+      <summary>With Visual Studio</summary>
+
+      Go to Project Properties -> Build Events
+
+      On "Post-build event command line" add the following line:
+
+      ```
+      copy "$(SolutionDir)\lib\*" "$(TargetDir)"
+      ```
+    </details>
+
+    <details>
+      <summary>With CLI</summary>
+      
+      Edit the <Project-name>.csproj file.
+      
+      Inside the Project tag, add the following:
+      
+      ```
+      <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="copy &quot;$(SolutionDir)\lib\*&quot; &quot;$(TargetDir)&quot;" />
+      </Target>
+      ```
+      
+    </details>
+ 
+ 
