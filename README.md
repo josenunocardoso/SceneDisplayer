@@ -52,37 +52,35 @@ The library is not intended to be used for:
  - Install the [Nuget package](https://www.nuget.org/packages/Cardoso.SceneDisplayer/)
  
  - Add the SDL2 binaries to the build:
- 
-  - Create a folder on the project folder that was created. In this example we will call the folder "lib".
   
-  - Copy all the SDL2 Runtime Binaries to this folder.
+    - Create a folder on the project folder that was created. In this example we will call the folder "lib".
   
-  - Automatically copy those binaries to the output folder, after build time:
-    <details>
-      <summary>With Visual Studio</summary>
+    - Copy all the SDL2 Runtime Binaries to this folder.
 
-      Go to Project Properties -> Build Events
+    - Automatically copy those binaries to the output folder, after build time:
+      <details>
+        <summary>With Visual Studio</summary>
 
-      On "Post-build event command line" add the following line:
+        Go to Project Properties -> Build Events
 
-      ```
-      copy "$(SolutionDir)\lib\*" "$(TargetDir)"
-      ```
-    </details>
+        On "Post-build event command line" add the following line:
 
-    <details>
-      <summary>With CLI</summary>
-      
-      Edit the <Project-name>.csproj file.
-      
-      Inside the Project tag, add the following:
-      
-      ```
-      <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="copy &quot;$(SolutionDir)\lib\*&quot; &quot;$(TargetDir)&quot;" />
-      </Target>
-      ```
-      
-    </details>
- 
- 
+        ```
+        copy "$(SolutionDir)\lib\*" "$(TargetDir)"
+        ```
+      </details>
+
+      <details>
+        <summary>With CLI</summary>
+
+        Edit the <Project-name>.csproj file.
+
+        Inside the Project tag, add the following:
+
+        ```
+        <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+          <Exec Command="copy &quot;$(SolutionDir)\lib\*&quot; &quot;$(TargetDir)&quot;" />
+        </Target>
+        ```
+
+      </details>
