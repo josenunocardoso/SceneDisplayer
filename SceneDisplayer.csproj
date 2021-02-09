@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageId>Cardoso.SceneDisplayer</PackageId>
+    <Authors>Cardoso</Authors>
+    <Description>The Scene Displayer Library is built on top of SDL. It allows to easily render scenes that contain 2D objects in C#.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>SDL, Display, Graphics, 2D, Render</PackageTags>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <RepositoryUrl>https://github.com/josenunocardoso/SceneDisplayer/</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
