@@ -53,7 +53,7 @@ The library is not intended to be used for:
  
  - Add the SDL2 binaries to the build:
   
-    - Create a folder on the project folder that was created. In this example we will call the folder "lib".
+    - Create a folder on the project folder that was created. In this example we will call the folder "lib". If you choose a different name, you must replace "lib" with the name you chose, on the following steps.
   
     - Copy all the SDL2 Runtime Binaries to this folder.
 
