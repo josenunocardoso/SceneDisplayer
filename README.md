@@ -84,3 +84,38 @@ The library is not intended to be used for:
         ```
 
       </details>
+      
+#### Hello World
+
+- In order to display something on the screen, we must define a Scene and initialize it with the SceneManager.
+
+- The following code should display an empty blue window:
+    
+```
+using SceneDisplayer;
+
+namespace Test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SceneManager.Init(new TestScene(), "Hello World");
+            SceneManager.Render();
+            SceneManager.Dispose();
+        }
+    }
+
+    public class TestScene : Scene
+    {
+    }
+}
+```
+
+- We defined a Scene, called TestScene, and created an instance of it to be passed on the SceneManager.Init method, alongside with the window title "Hello World".
+
+- SceneManager.Render is a blocking method, that does all the rendering logic, and listens to events.
+
+- Finally, SceneManager.Dispose is called when the application is closed, in order to release the used resources.
+
+- For additional information on how to add Entities and how to interact between them and the Scenes, read the documentation (TODO).
