@@ -25,7 +25,7 @@ namespace SceneDisplayer.Utils {
         }
 
         /// <summary>
-        /// Returns whether this point contains another given point.
+        /// Returns whether this RectF contains a given point.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns>True if it contains, False otherwise.</returns>
@@ -36,7 +36,7 @@ namespace SceneDisplayer.Utils {
         }
 
         /// <summary>
-        /// Returns whether this point contains another given point.
+        /// Returns whether this RectF contains a given point.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns>True if it contains, False otherwise.</returns>

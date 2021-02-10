@@ -30,6 +30,7 @@ namespace SceneDisplayer.Utils {
         }
 
         #region Static Colors
+        public static readonly Color Transparent = new Color { a = 0x00 };
         public static readonly Color Cyan = new Color(0x00, 0xFF, 0xFF);
         public static readonly Color Black = new Color(0x00, 0x00, 0x00);
         public static readonly Color Blue = new Color(0x00, 0x00, 0xFF);
