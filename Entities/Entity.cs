@@ -79,13 +79,29 @@ namespace SceneDisplayer.Entities {
         }
 
         /// <summary>
-        /// Removes children on a given predicate.
+        /// Performs an action on all the children.
+        /// This action is performed recursively (e.g. on the children of the children).
         /// </summary>
+        /// <param name="ac">The action to perform.</param>
+        public void PerformActionOnChildrenRecursively(Action<Entity> ac) {
+            this.PerformActionOnChildrenRecursively(ac, _ => true);
+        }
+
+        /// <summary>
+        /// Performs an action on all the children on a given predicate.
+        /// This action is performed recursively (e.g. on the children of the children).
+        /// </summary>
+        /// <param name="ac">The action to perform.</param>
         /// <param name="pred">The predicate to test.</param>
-        public void RemoveChildren(Predicate<Entity> pred) {
-            foreach (var child in this.Children.Values.Where(c => pred(c))) {
-                child.Dispose();
-                this.RemoveChild(child);
+        public void PerformActionOnChildrenRecursively(Action<Entity> ac, Predicate<Entity> pred) {
+            foreach (var child in this.Children.Values) {
+                if (pred(child)) {
+                    ac(child);
+                }
+
+                foreach (var subchild in child.Children.Values) {
+                    subchild.PerformActionOnChildrenRecursively(ac, pred);
+                }
             }
         }
 
