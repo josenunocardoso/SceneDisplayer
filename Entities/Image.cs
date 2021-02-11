@@ -51,6 +51,10 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
             base.Draw(renderer, screenWidth, screenHeight);
 
+            if (this.ImagePath == null) {
+                return;
+            }
+
             var key = new TextureCaracteristics(this.ImagePath);
 
             if (!CachedTextures.ContainsKey(key)) {
