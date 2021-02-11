@@ -27,21 +27,21 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// The source point of the Line.
         /// </summary>
-        public PointF Source { get; }
+        public PointF Source { get; set;}
 
         /// <summary>
         /// The destination point of the Line.
         /// </summary>
-        public PointF Destination { get; }
+        public PointF Destination { get; set; }
 
         /// <summary>
         /// The color of the Line.
         /// </summary>
-        public Color Color { get; }
+        public Color Color { get; set;}
 
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            base.Draw(renderer, screenWidth, screenHeight);
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
             
             SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
 

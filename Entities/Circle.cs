@@ -44,7 +44,7 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// The number of sides of the <c>Circle</c>.
         /// </summary>
-        public int Sides { get; set; }
+        public int Sides { get; }
 
 
         public event EventHandler<ClickArgs> Click;
@@ -61,37 +61,42 @@ namespace SceneDisplayer.Entities {
         }
 
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            base.Draw(renderer, screenWidth, screenHeight);
+        public override void Init() {
+            for (int i = 0; i < this.Sides; i++) {
+                this.AddChild(("Side", i), new Line(new PointF(), new PointF(), this.Color, false));
+            }
+        }
 
-            SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
 
             var center = this.GetAbsolutePoint(this.Center, screenWidth, screenHeight);
             float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, screenWidth, screenHeight).x;
 
             float sides = this.Sides;
             if (sides == 0) {
-                sides = (float)Math.PI * this.Radius;
+                sides = (float)Math.PI * radius;
             }
 
             float d_a = (float)Math.PI * 2 / this.Sides;
             float angle = d_a;
 
             PointF start, end;
-            end.x = this.Radius + center.x;
+            end.x = radius + center.x;
             end.y = center.y;
 
             for (int i = 0; i != sides; i++) {
                 start = end;
-                end.x = (float)Math.Cos(angle) * this.Radius + center.x;
-                end.y = (float)Math.Sin(angle) * this.Radius + center.y;
+                end.x = (float)Math.Cos(angle) * radius + center.x;
+                end.y = (float)Math.Sin(angle) * radius + center.y;
                 
                 angle += d_a;
 
-                using (var line = new Line(start, end, this.Color, false)) {
-                    line.Draw(renderer, screenWidth, screenHeight);
-                }
-            } 
+                var line = this.Children[("Side", i)] as Line;
+                line.Source = start;
+                line.Destination = end;
+                line.Color = this.Color;
+            }
         }
     }
 }

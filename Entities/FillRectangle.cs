@@ -27,8 +27,8 @@ namespace SceneDisplayer.Entities {
         public Color Color { get; set; }
 
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            base.Draw(renderer, screenWidth, screenHeight);
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
 
             SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
 

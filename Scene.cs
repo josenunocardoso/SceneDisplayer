@@ -34,6 +34,19 @@ namespace SceneDisplayer {
         }
 
         /// <summary>
+        /// Adds an <see cref="Entity"/> to the scene, and initializes it.
+        /// </summary>
+        /// <param name="entity"><see cref="Entity"/> to be added.</param>
+        /// <exception cref="ArgumentNullException">Throws an <see cref="ArgumentNullException"/> if the <c>entity</c> is null.</exception>
+        public void AddEntity(Entity entity) {
+            if (entity == null) {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            this.Entities.Add(entity);
+        }
+
+        /// <summary>
         /// Triggers an <c>Update</c> event to the <c>Scene</c>.
         /// </summary>
         public void OnUpdate() {

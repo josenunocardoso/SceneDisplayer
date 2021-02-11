@@ -120,6 +120,7 @@ namespace SceneDisplayer {
         public static void Render() {
             bool running = true;
             uint frameStartTime = SDL.SDL_GetTicks();
+            uint delta = 0;
 
             while (running) {
                 SDL.SDL_SetRenderDrawColor(_renderer,
@@ -131,7 +132,7 @@ namespace SceneDisplayer {
 
                 if (ActiveScene != null) {
                     foreach (var entity in ActiveScene.Entities) {
-                        entity.Draw(_renderer, w, h);
+                        entity.Draw(_renderer, w, h, delta);
                     }
                     ActiveScene.OnUpdate();
                 }
@@ -171,7 +172,8 @@ namespace SceneDisplayer {
                     }
                 }
 
-                int delaytime = (int)(DELAY_TIME - (SDL.SDL_GetTicks() - frameStartTime));
+                delta = SDL.SDL_GetTicks() - frameStartTime;
+                int delaytime = (int)(DELAY_TIME - delta);
 
                 if (delaytime > 0) {
                     SDL.SDL_Delay((uint)delaytime);

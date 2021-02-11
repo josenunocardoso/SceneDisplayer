@@ -124,8 +124,8 @@ namespace SceneDisplayer.Entities {
             throw new NotSupportedException("The given TextAlignment is not supported");
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            base.Draw(renderer, screenWidth, screenHeight);
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
 
             if (this.Font == null) return;
             

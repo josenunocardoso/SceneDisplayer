@@ -48,8 +48,8 @@ namespace SceneDisplayer.Entities {
             CachedTextures[key] = texture;
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
-            base.Draw(renderer, screenWidth, screenHeight);
+        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
 
             if (this.ImagePath == null) {
                 return;

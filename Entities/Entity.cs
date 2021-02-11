@@ -47,14 +47,14 @@ namespace SceneDisplayer.Entities {
         /// <param name="key"><see cref="Key"/> of the child.</param>
         /// <param name="child"><see cref="Entity"/> to be added.</param>
         /// <exception cref="ArgumentNullException">Throws an <see cref="ArgumentNullException"/> if the <c>child</c> is null.</exception>
-        /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the <c>child</c> already exists.</exception>
+        /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the <c>key</c> already exists.</exception>
         public void AddChild(object key, Entity child) {
             if (child == null) {
                 throw new ArgumentNullException(nameof(child));
             }
 
             if (this.Children.ContainsKey(key)) {
-                throw new ArgumentException("Child already exists");
+                throw new ArgumentException("Key already exists");
             }
 
             child.Key = key;
@@ -112,9 +112,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="renderer">Pointer to the renderer used.</param>
         /// <param name="screenWidth">Screen width in pixels.</param>
         /// <param name="screenHeight">Screen height in pixels.</param>
-        public virtual void Draw(IntPtr renderer, int screenWidth, int screenHeight) {
+        /// <param name="deltaTime">Time elapsed since the last draw call, in milliseconds.</param>
+        public virtual void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
             foreach (var child in this.Children.Values) {
-                child.Draw(renderer, screenWidth, screenHeight);
+                child.Draw(renderer, screenWidth, screenHeight, deltaTime);
             }
         }
 
