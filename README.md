@@ -1,6 +1,6 @@
 # SceneDisplayer
 
-The Scene Displayer Library is built on top of [SDL](https://www.sdl.com/). It allows to easily render scenes that contain 2D objects in C# .Net. Since it is built on top of [SDL](https://www.sdl.com/), the library intends to be able to target Windows, MacOS and Linux.
+The Scene Displayer Library is built on top of [SDL](https://www.libsdl.org/). It allows to easily render scenes that contain 2D objects in C# .Net. Since it is built on top of [SDL](https://www.libsdl.org/), the library intends to be able to target Windows, MacOS and Linux.
 
 The main purpose of this project is to make it simple to render multiple scenes, by abstracting some of the SDL rendering logic.
 
@@ -50,6 +50,12 @@ The library is not intended to be used for:
   </details>
 
  - Install the [Nuget package](https://www.nuget.org/packages/Cardoso.SceneDisplayer/)
+ 
+    - Alternatively, you can clone this repo, and reference SceneDisplayer.csproj to your project.
+    
+    ```
+    dotnet add reference <path-to-the-cloned-repo>/SceneDisplayer.csproj
+    ```
  
  - Add the SDL2 binaries to the build:
   
