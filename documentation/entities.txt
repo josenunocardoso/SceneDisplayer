@@ -1,0 +1,30 @@
+@startuml
+class "SceneManager" {
+    {static} Stack<Scene> Scenes
+    {static} Scene ActiveScene
+    
+    {static} void PushScene(Scene scene)
+    {static} Scene PopScene()
+    
+    {static} void Init(Scene scene, string title)
+    {static} void Render()
+}
+abstract class "Entity" {
+    Dictionary<Object, Entity> Children
+}
+abstract class "RectangularEntity" {
+    RectF Area
+}
+abstract class "Scene" {
+    List<Entity> Entities
+}
+
+Entity <|-- RectangularEntity
+RectangularEntity <|-- Rectangle
+RectangularEntity <|-- FillRectangle
+RectangularEntity <|-- Image
+RectangularEntity <|-- TextEntity
+Entity <|-- Circle
+Entity <|-- Line
+Entity <|-- VisibleWrapper
+@enduml
