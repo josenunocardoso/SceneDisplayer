@@ -10,6 +10,20 @@ namespace SceneDisplayer.Utils {
         public float w;
         public float h;
 
+        /// <summary>
+        /// Constructs a RectF.
+        /// </summary>
+        /// <param name="x">X position.</param>
+        /// <param name="y">Y Position.</param>
+        /// <param name="w">Width.</param>
+        /// <param name="h">Height.</param>
+        public RectF(float x, float y, float w, float h) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+        }
+
 
         /// <summary>
         /// Returns an equivalent <see cref="SDL.SDL_Rect"/>, with the values casted to <see cref="int"/>.
