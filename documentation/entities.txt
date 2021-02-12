@@ -19,6 +19,8 @@ abstract class "Scene" {
     List<Entity> Entities
 }
 
+SceneManager *-- Scene
+Scene *-- Entity
 Entity <|-- RectangularEntity
 RectangularEntity <|-- Rectangle
 RectangularEntity <|-- FillRectangle
