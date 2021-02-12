@@ -9,10 +9,9 @@ namespace SceneDisplayer {
     /// Main class, responsible to manage the active scenes and to render them.
     /// </summary>
     public static class SceneManager {
-        private const int FPS = 120;
         private const int DEFAULT_SCREEN_WIDTH = 1000;
         private const int DEFAULT_SCREEN_HEIGHT = 600;
-        private const uint DELAY_TIME = (uint)(1000f / FPS);
+        private static uint DELAY_TIME = (uint)(1000f / FPS);
 
 
         static SceneManager() {
@@ -27,6 +26,7 @@ namespace SceneDisplayer {
         private static Stack<Scene> Scenes { get; }
          
         private static Scene ActiveScene => Scenes.Peek();
+        private static uint FPS = 120u;
 
 
         /// <summary>
@@ -35,6 +35,21 @@ namespace SceneDisplayer {
         /// <param name="color">The new color.</param>
         public static void SetBackgroundColor(Color color) {
             _backgroundColor = color.ToSDLColor();
+        }
+
+        /// <summary>
+        /// Gets the current desired frames per second of the renderer.
+        /// </summary>
+        public static uint GetFPS() {
+            return FPS;
+        }
+
+        /// <summary>
+        /// Sets the desired frames per second of the renderer. By default it is 120.
+        /// </summary>
+        public static void SetFPS(uint fps) {
+            FPS = fps;
+            DELAY_TIME = (uint)(1000f / FPS);
         }
 
         /// <summary>
@@ -171,13 +186,13 @@ namespace SceneDisplayer {
                         }
                     }
                 }
-
-                delta = SDL.SDL_GetTicks() - frameStartTime;
                 int delaytime = (int)(DELAY_TIME - delta);
 
                 if (delaytime > 0) {
                     SDL.SDL_Delay((uint)delaytime);
                 }
+
+                delta = SDL.SDL_GetTicks() - frameStartTime;
                 
                 frameStartTime = SDL.SDL_GetTicks();
             }
