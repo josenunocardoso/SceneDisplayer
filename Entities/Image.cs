@@ -35,9 +35,26 @@ namespace SceneDisplayer.Entities {
         /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
         /// False, to consider absolute positions, in pixels.</param>
         public Image(RectF area, string path, byte alpha, bool relativeToScreenSize = true)
+        : this(area, path, alpha, 0.0, relativeToScreenSize) {
+
+        }
+
+        /// <summary>
+        /// Constructs a <c>Image</c>.
+        /// </summary>
+        /// <param name="area">The area of the <c>Image</c>.</param>
+        /// <param name="path">The path of the texture of the <c>Image</c>. (e.g. a jpg or bmp file)</param>
+        /// <param name="alpha">The image alpha channel. Set it to 0x0 to make the image transparent.
+        /// Set it to 0xFF to make it opaque.</param>
+        /// <param name="angle">The angle in degrees of the rotation applied on the center of the image.
+        /// The default is 0.</param>
+        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
+        /// False, to consider absolute positions, in pixels.</param>
+        public Image(RectF area, string path, byte alpha, double angle, bool relativeToScreenSize = true)
         : base(area, relativeToScreenSize) {
             this.ImagePath = path;
             this.Alpha = alpha;
+            this.Angle = angle;
         }
 
 
@@ -52,6 +69,11 @@ namespace SceneDisplayer.Entities {
         /// The image alpha channel. Set it to 0x0 to make the image transparent. Set it to 0xFF to make it opaque.
         /// </summary>
         public byte Alpha { get; set; }
+
+        /// <summary>
+        /// The angle in degrees of the rotation applied on the center of the image.
+        /// </summary>
+        public double Angle { get; set; }
 
 
         private void CreateTexture(IntPtr renderer, TextureCaracteristics key) {
@@ -89,7 +111,12 @@ namespace SceneDisplayer.Entities {
                 throw new NotSupportedException("The renderer does not support alpha modulation.");
             }
 
-            SDL.SDL_RenderCopy(renderer, texture, IntPtr.Zero, ref area);
+            var center = new SDL.SDL_Point {
+                x = area.w / 2,
+                y = area.h / 2
+            };
+            SDL.SDL_RenderCopyEx(renderer, texture, IntPtr.Zero, ref area, this.Angle,
+                ref center, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
         }
     }
 
