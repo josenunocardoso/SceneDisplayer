@@ -73,6 +73,19 @@ public class MyEntity : Entity
 
 - The AddChild method requests a unique key, alongside the Entity to add. We can later get a given child through their key.
 
+- Finally, we replace the code of the TestScene, to add this Entity, instead of the original FillRectangle.
+
+```
+public class TestScene : Scene
+{
+    public TestScene()
+    {
+        var myEntity = new MyEntity();
+        this.AddEntity(myEntity);
+    }
+}
+```
+
 - The order on which we add the children matters. The children that are added first, are rendered first. Therefor, in this case, the green rectangle will be drawn over the red rectangle:
 
 ![Children Entity Example](https://raw.githubusercontent.com/josenunocardoso/SceneDisplayer/master/documentation/ChildrenEntityExample.png)
