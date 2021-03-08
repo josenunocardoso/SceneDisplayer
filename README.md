@@ -85,7 +85,7 @@ The library is not intended to be used for:
 
         ```
         <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-          <Exec Command="copy &quot;$(SolutionDir)\lib\*&quot; &quot;$(TargetDir)&quot;" />
+          <Exec Command="copy &quot;$(ProjectDir)\lib\*&quot; &quot;$(TargetDir)&quot;" />
         </Target>
         ```
 
