@@ -72,7 +72,7 @@ The library is not intended to be used for:
         On "Post-build event command line" add the following line:
 
         ```
-        copy "$(SolutionDir)\lib\*" "$(TargetDir)"
+        copy "$(ProjectDir)\lib\*" "$(TargetDir)"
         ```
       </details>
 
