@@ -12,8 +12,8 @@ This file intends to give a technical overview of the behavior of the classes of
   - [TextEntity](#textentity)
 - [Utils](#utils)
   - [RectF](#rectf)
-  - [Color](#color)
   - [PointF](#pointf)
+  - [Color](#color)
 
 ## Technical overview
 
@@ -200,6 +200,104 @@ An [<b>Entity</b>](#entity) that renders text.
 
 ### RectF
 
-### Color
+#### Description
+Represents a floated rectangle.
+
+#### Fields
+
+- x: X position.
+  - Type: <b>float</b>.
+- y: Y position.
+  - Type: <b>float</b>.
+- w: Width.
+  - Type: <b>float</b>.
+- h: Height.
+  - Type: <b>float</b>.
+
+#### Main Methods
+
+- <b>ToSDLRect</b>: Returns an equivalent SDL_Rect, with the values casted to int.
+  - <b>Return Type: SDL_Rect</b>
+
+- <b>Contains</b>: Returns whether this RectF contains a given point.
+  - point: The point to compare.
+    - Type: <b>SDL_Point</b>
+  - <b>Return Type: bool</b>True if it contains, False otherwise.
+
+- <b>Contains</b>: Returns whether this RectF contains a given point.
+  - point: The point to compare.
+    - Type: [<b>PointF</b>](#pointf)
+  - <b>Return Type: bool</b>True if it contains, False otherwise.
 
 ### PointF
+
+#### Description
+Represents a floated point.
+
+#### Fields
+
+- x: X position.
+  - Type: <b>float</b>.
+- y: Y position.
+  - Type: <b>float</b>.
+
+
+### Color
+
+#### Description
+Represents a RGBA color.
+
+#### Fields
+
+- r: Red channel.
+  - Type: <b>byte</b>.
+  - Range: 0x00 (0) to 0xFF (255)
+- g: Green channel.
+  - Type: <b>byte</b>.
+  - Range: 0x00 (0) to 0xFF (255)
+- b: Blue channel.
+  - Type: <b>byte</b>.
+  - Range: 0x00 (0) to 0xFF (255)
+- a: Alpha channel.
+  - Type: <b>byte</b>.
+  - By default is <b>0xFF</b>.
+  - Range: 0x00 (0) to 0xFF (255)
+
+#### Static fields
+
+- Transparent
+  - Type: <b>Color</b>
+- Cyan
+  - Type: <b>Color</b>
+- Black
+  - Type: <b>Color</b>
+- Blue
+  - Type: <b>Color</b>
+- Magenta
+  - Type: <b>Color</b>
+- Grey
+  - Type: <b>Color</b>
+- Green
+  - Type: <b>Color</b>
+- Lime
+  - Type: <b>Color</b>
+- Maroon
+  - Type: <b>Color</b>
+- NavyBlue
+  - Type: <b>Color</b>
+- Olive
+  - Type: <b>Color</b>
+- Purple
+  - Type: <b>Color</b>
+- Red
+  - Type: <b>Color</b>
+- Silver
+  - Type: <b>Color</b>
+- Teal
+  - Type: <b>Color</b>
+- White
+  - Type: <b>Color</b>
+- Yellow
+  - Type: <b>Color</b>
+- Orange
+  - Type: <b>Color</b>
