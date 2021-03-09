@@ -25,7 +25,7 @@ Entity <|-- RectangularEntity
 RectangularEntity <|-- Rectangle
 RectangularEntity <|-- FillRectangle
 RectangularEntity <|-- Image
-RectangularEntity <|-- TextEntity
+Entity <|-- TextEntity
 Entity <|-- Circle
 Entity <|-- Line
 Entity <|-- VisibleWrapper
