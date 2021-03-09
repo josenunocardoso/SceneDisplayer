@@ -75,5 +75,3 @@ public class TestScene : Scene
 ```
 
 ![Children Entity Example](https://raw.githubusercontent.com/josenunocardoso/SceneDisplayer/master/documentation/ChildrenEntityExample.png)
-
-## TODO
