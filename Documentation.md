@@ -10,6 +10,9 @@ This file intends to give a technical overview of the behavior of the classes of
   - [FillRectangle](#fillrectangle)
   - [Image](#image)
   - [TextEntity](#textentity)
+  - [Circle](#circle)
+  - [Line](#line)
+  - [VisibleWrapper](#visiblewrapper)
 - [Utils](#utils)
   - [RectF](#rectf)
   - [PointF](#pointf)
@@ -146,6 +149,8 @@ An [<b>Entity</b>](#entity) that renders an image.
   - Type: <b>byte</b>
 - <b>Angle</b>: The angle in degrees of the rotation applied on the center of the image.
   - Type: <b>double</b>.
+- [<b>Area</b>](#rectangularentity)
+- [<b>RelativeToScreenSize</b>](#entity)
 
 #### Behavior
 - This Entity uses cache, shared between all the Images. If an Image instance has set the same ImagePath as another instance, that image will be shared between both of them.
@@ -169,6 +174,7 @@ An [<b>Entity</b>](#entity) that renders text.
   - Type: [<b>Color</b>](#color)
 - <b>Location</b>: The location of the Entity.
   - Type: [<b>PointF</b>](#pointf)
+- [<b>RelativeToScreenSize</b>](#entity)
 
 #### Main Methods
 
@@ -193,6 +199,56 @@ An [<b>Entity</b>](#entity) that renders text.
 #### Behavior
 - This Entity uses cache, shared between all the TextEntites. If an Image instance has set the same Text, Font, FontSize and Color as another instance, that text will be shared between both of them.
 - If the given Text, Font, FontSize or Color are being used for the first time, a texture for the text will be created on the fly, on the first Draw method call.
+
+### Circle
+
+#### Description
+An Entity that renders a circle.
+
+#### Properties
+
+- <b>Center</b>: The center of the Circle.
+  - Type: [<b>PointF</b>](#pointf)
+- <b>Radius</b>: The radius of the Circle.
+  - Type: <b>float</b>
+- <b>Color</b>: The color of the Circle.
+  - Type: [<b>Color</b>](#color)
+- <b>Sides</b>: The number of sides of the Circle.
+  - Type: <b>int</b>
+  - By default is <b>10</b>.
+  - The more sides it has, the more it looks like a Circle. However, the performance decreases the bigger the number of sides is.
+- [<b>RelativeToScreenSize</b>](#entity)
+
+#### Main methods
+
+- <b>OnClick</b>: Method called by the SceneManager, when there is a click inside of the Circle defined by the center and the radius in this Entity.
+
+### Line
+
+#### Description
+An Entity that renders a line.
+
+### Properties
+
+- <b>Source</b>: The source point of the Line.
+  - Type: [<b>PointF</b>](#pointf)
+- <b>Target</b>: The destination point of the Line.
+  - Type: [<b>PointF</b>](#pointf)
+- <b>Color</b>: The color of the Line.
+  - Type: [<b>Color</b>](#color)
+- [<b>RelativeToScreenSize</b>](#entity)
+
+### VisibleWrapper
+
+#### Description
+An Entity that encapsulates another Entity and manages whether that Entity is visible or not.
+
+#### Properties
+
+- <b>Visible</b>: Whether the child is set to be rendered, or not.
+  - Type: <b>bool</b>
+- <b>Entity</b>: The encapsulated Entity.
+  - Type: [<b>Entity</b>](#entity)
 
 
 ## Utils
