@@ -21,6 +21,7 @@ This file intends to give a technical overview of the behavior of the classes of
   - [Rectangle](#rectangle)
   - [FillRectangle](#fillrectangle)
   - [Image](#image)
+  - [TextEntity](#textentity)
 - [Utils](#utils)
   - [RectF](#rectf)
   - [Color](#color)
@@ -149,6 +150,49 @@ An [<b>Entity</b>](#entity) that renders an image.
 #### Behavior
 - This Entity uses cache, shared between all the Images. If an Image instance has set the same ImagePath as another instance, that image will be shared between both of them.
 - If the given ImagePath is being used for the first time, a texture for the image will be created on the fly, on the first Draw method call.
+
+
+### TextEntity
+
+#### Description
+An [<b>Entity</b>](#entity) that renders text.
+
+#### Properties
+
+- <b>Text</b>: The text to be rendered.
+  - Type: <b>string</b>
+- <b>Font</b>: The font path.
+  - Type: <b>string</b>
+- <b>FontSize</b>: The font size.
+  - Type: <b>int</b>
+- <b>TextColor</b>: The text color.
+  - Type: [<b>Color</b>](#color)
+- <b>Location</b>: The location of the Entity.
+  - Type: [<b>PointF</b>](#pointf)
+
+#### Main Methods
+
+- <b>GetTextSize</b>: Retrieves the size a given TextEntity template would occupy.
+  - text: Text.
+    - Type: <b>string</b>
+  - font: Font path.
+    - Type: <b>string</b>
+  - fontSize: Font size.
+    - Type: <b>int</b>
+  - textColor: Text color.
+    - Type: [<b>Color</b>](#color)
+  - <b>Return Type: (int, int)</b>: A tuple with the width and the height of the template, respectively.
+
+- <b>GetTextAbsoluteLocation</b>: Returns the absolute location of this TextEntity, according to the TextAlignment used.
+  - alignment: The text alignment.
+    - Type: <b>string</b>
+  - area: The area where the TextEntity would be placed.
+    - Type: <b>SDL_Rect</b>
+  - <b>Return Type: [PointF](#pointf)</b>
+
+#### Behavior
+- This Entity uses cache, shared between all the TextEntites. If an Image instance has set the same Text, Font, FontSize and Color as another instance, that text will be shared between both of them.
+- If the given Text, Font, FontSize or Color are being used for the first time, a texture for the text will be created on the fly, on the first Draw method call.
 
 
 ## Utils
