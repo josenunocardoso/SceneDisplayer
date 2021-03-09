@@ -222,12 +222,12 @@ Represents a floated rectangle.
 - <b>Contains</b>: Returns whether this RectF contains a given point.
   - point: The point to compare.
     - Type: <b>SDL_Point</b>
-  - <b>Return Type: bool</b>True if it contains, False otherwise.
+  - <b>Return Type: bool</b>: True if it contains, False otherwise.
 
 - <b>Contains</b>: Returns whether this RectF contains a given point.
   - point: The point to compare.
     - Type: [<b>PointF</b>](#pointf)
-  - <b>Return Type: bool</b>True if it contains, False otherwise.
+  - <b>Return Type: bool</b>: True if it contains, False otherwise.
 
 ### PointF
 
