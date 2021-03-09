@@ -1,4 +1,4 @@
-This file intends to give a technical overview of the behavior of the classes of this library, and each one of the defined Entities.
+This file intends to give a technical overview of the behavior of the classes of this library, and each one of the defined Entities and utility classes.
 
 ## Technical overview
 
@@ -12,17 +12,150 @@ This file intends to give a technical overview of the behavior of the classes of
 
 - Any Entity may contain other Entities, as children. This allows to extend the already defined Entities from this Library, by creating new Entities that contain multiple children. This concept is very useful to avoid code repetition and to abstract complex objects.
 
-## Entities
 
 ### Table of Contents
 
-- [Rectangle](#rectangle)
-- [FillRectangle](#fillrectangle)
-- [Image](#image)
+- [Entities](#entities)
+  - [Entity](#entity)
+  - [RectangularEntity](#rectangularentity)
+  - [Rectangle](#rectangle)
+  - [FillRectangle](#fillrectangle)
+  - [Image](#image)
+- [Utils](#utils)
+  - [RectF](#rectf)
+  - [Color](#color)
+  - [PointF](#pointf)
+
+## Entities
 
 
-## Rectangle
+### Entity
 
-## FillRectangle
+#### Description
+A component that is displayed on a Scene. It may contain other Entities as children.
 
-## Image
+#### Properties
+
+- <b>Key</b>: The Key that was given with AddChild.
+  - Type: <b>object</b>
+- <b>RelativeToScreenSize</b>: True, to consider positions relative to the screen size. False, to consider absolute positions, in pixels.
+  - Type: <b>bool</b>
+  - By default is <b>true</b>.
+  - If this property set to <b>true</b>, the coordinates (0.5, 0.5) would represent the center of the window.
+  - If this property is set to <b>false</b>, the coordinates (200, 300) would represent a point 200px away from the left side of the window, and 300px away from the top side of the window.
+- <b>Children</b>: The children of this Entity.
+
+#### Main Methods
+
+- <b>AddChild</b>: Adds an Entity as a new child, and initializes it.
+  - key: Key of the child.
+    - Type: <b>object</b>
+    - The key must not be null, and must be unique. This key is then used to identify this Entity.
+  - child: Entity to be added.
+    - Type: <b>Entity</b>
+
+- <b>RemoveChild</b>: Removes a child and disposes it.
+  - key: The key of the child to be removed.
+    - Type: <b>object</b>
+    - There must be a child with the given key.
+
+- <b>PerformActionOnChildrenRecursively</b>: Performs an action on all the children. This action is performed recursively (e.g. on the children of the children).
+  - ac: The action to perform.
+    - Type: <b>Action\<Entity\></b>
+
+- <b>PerformActionOnChildrenRecursively</b>: Performs an action on all the children on a given predicate. This action is performed recursively (e.g. on the children of the children).
+  - ac: The action to perform.
+    - Type: <b>Action\<Entity\></b>
+  - pred: The predicate to test.
+    - Type: <b>Predicate\<Entity\></b>
+
+- <b>ClearChildren</b>: Clears all the children, and disposes them.
+
+- <b>Init</b>: Initializes the Entity. It is called when an Entity is added.
+  - Empty virtual method; can be overriden by sub-classes of Entity.
+
+- <b>Draw</b>: Draws the Entity. It is called by the SceneManager.Render method. The method is called once, for every frame rendered.
+  - Virtual method, that calls recursively the Draw method on its children. base.Draw must be called at the beginning, if this method is overriden.
+  - renderer: Pointer to the renderer used.
+    - Type: <b>IntPtr</b>
+  - windowWidth: Window width in pixels.
+    - Type: <b>int</b>
+  - windowHeight: Window height in pixels.
+    - Type: <b>int</b>
+  - deltaTime: Time elapsed since the last draw call, in milliseconds.
+    - Type: <b>uint</b>
+
+- <b>Dispose</b>: Disposes the Entity.
+  - Virtual method, that calls recursively the Dispose method on its children. base.Dispose must be called at the beginning, if this method is overriden.
+
+
+### RectangularEntity
+
+#### Description
+An [<b>Entity</b>](#entity) that has a rectangular shape.
+
+#### Properties
+
+- <b>Area</b>: The area of the Rectangle.
+  - Type: [<b>RectF</b>](#rectf)
+  - The x and y coordinates represent the position of the center of the Rectangle. w and h represent the width and the height respectively.
+- [<b>RelativeToScreenSize</b>](#entity)
+
+#### Main methods
+
+- <b>OnClick</b>: Method called by the SceneManager, when there is a click inside of the Area defined on this Entity.
+
+
+### Rectangle
+
+#### Description
+An [<b>Entity</b>](#entity) that renders a rectangle.
+
+#### Properties
+
+- <b>Color</b>: The color of the Rectangle.
+  - Type: [<b>Color</b>](#color)
+- [<b>Area</b>](#rectangularentity)
+- [<b>RelativeToScreenSize</b>](#entity)
+
+
+### FillRectangle
+
+#### Description
+An [<b>Entity</b>](#entity) that renders a filled rectangle.
+
+#### Properties
+
+- <b>Color</b>: The color of the Rectangle.
+  - Type: [<b>Color</b>](#color)
+- [<b>Area</b>](#rectangularentity)
+- [<b>RelativeToScreenSize</b>](#rectangularentity)
+
+
+### Image
+
+#### Description
+An [<b>Entity</b>](#entity) that renders an image.
+
+#### Properties
+
+- <b>ImagePath</b>: The image path.
+  - Type: <b>string</b>
+- <b>Alpha</b>: The image alpha channel. Set it to 0x0 to make the image transparent. Set it to 0xFF to make it opaque.
+  - Type: <b>byte</b>
+- <b>Angle</b>: The angle in degrees of the rotation applied on the center of the image.
+  - Type: <b>double</b>.
+
+#### Behavior
+- This Entity uses cache, shared between all the Images. If an Image instance has set the same ImagePath as another instance, that image will be shared between both of them.
+- If the given ImagePath is being used for the first time, a texture for the image will be created on the fly, on the first Draw method call.
+
+
+## Utils
+
+
+### RectF
+
+### Color
+
+### PointF
