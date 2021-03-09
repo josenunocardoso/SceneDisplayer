@@ -321,21 +321,21 @@ Represents a RGBA color.
 
 #### Defined Colors (static fields)
 
-- <span style="color:transparent">Transparent</span>
-- <span style="color:cyan">Cyan</span>
-- <span style="color:black">Black</span>
-- <span style="color:blue">Blue</span>
-- Magenta
-- Grey
-- Green
-- Lime
-- Maroon
-- NavyBlue
-- Olive
-- Purple
-- Red
-- Silver
-- Teal
-- White
-- Yellow
-- Orange
+- Transparent
+- Cyan ![](https://placehold.it/15/00FFFF/000000?text=+)
+- Black ![](https://placehold.it/15/000000/000000?text=+)
+- Blue ![](https://placehold.it/15/0000FF/000000?text=+)
+- Magenta ![](https://placehold.it/15/FF00FF/000000?text=+)
+- Grey ![](https://placehold.it/15/808080/000000?text=+)
+- Green ![](https://placehold.it/15/008000/000000?text=+)
+- Lime ![](https://placehold.it/15/00FF00/000000?text=+)
+- Maroon ![](https://placehold.it/15/800000/000000?text=+)
+- NavyBlue ![](https://placehold.it/15/000080/000000?text=+)
+- Olive ![](https://placehold.it/15/808000/000000?text=+)
+- Purple ![](https://placehold.it/15/800080/000000?text=+)
+- Red ![](https://placehold.it/15/FF0000/000000?text=+)
+- Silver ![](https://placehold.it/15/C0C0C0/000000?text=+)
+- Teal ![](https://placehold.it/15/008080/000000?text=+)
+- White ![](https://placehold.it/15/FFFFFF/000000?text=+)
+- Yellow ![](https://placehold.it/15/FFFF00/000000?text=+)
+- Orange ![](https://placehold.it/15/FFA500/000000?text=+)
