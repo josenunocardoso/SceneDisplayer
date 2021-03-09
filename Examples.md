@@ -1,5 +1,7 @@
 ## Examples
 
+This file intends to demonstrate some examples of the use of this library.
+
 #### Draw a Rectangle
 
 ```
