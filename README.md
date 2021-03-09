@@ -124,4 +124,4 @@ namespace Test
 
 - Finally, SceneManager.Dispose is called when the application is closed, in order to release the used resources.
 
-- For additional information on how to add Entities and how to interact between them and the Scenes, read the [documentation](Documentation.md).
+- For additional information on how to add Entities and how to interact between them and the Scenes, read the [examples](Examples.md) and/or the [documentation](Documentation.md).
