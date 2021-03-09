@@ -1,4 +1,4 @@
-This file intends to give a technical overview of the behavior of the classes of this library, and to demonstrate some examples of its use.
+This file intends to give a technical overview of the behavior of the classes of this library, and each one of the defined Entities.
 
 ## Technical overview
 
@@ -11,3 +11,5 @@ This file intends to give a technical overview of the behavior of the classes of
 - A Scene can contain multiple Entities. An Entity represents a subset of the Scene to be drawn. This can be a basic shape (like Circles, Lines, Rectangles) or other kind of objects, like text or images.
 
 - Any Entity may contain other Entities, as children. This allows to extend the already defined Entities from this Library, by creating new Entities that contain multiple children. This concept is very useful to avoid code repetition and to abstract complex objects.
+
+#TODO
