@@ -319,41 +319,23 @@ Represents a RGBA color.
   - By default is <b>0xFF</b>.
   - Range: 0x00 (0) to 0xFF (255)
 
-#### Static fields
+#### Defined Colors (static fields)
 
-- Transparent
-  - Type: <b>Color</b>
-- Cyan
-  - Type: <b>Color</b>
-- Black
-  - Type: <b>Color</b>
-- Blue
-  - Type: <b>Color</b>
+- <span style="color:transparent">Transparent</span>
+- <span style="color:cyan">Cyan</span>
+- <span style="color:black">Black</span>
+- <span style="color:blue">Blue</span>
 - Magenta
-  - Type: <b>Color</b>
 - Grey
-  - Type: <b>Color</b>
 - Green
-  - Type: <b>Color</b>
 - Lime
-  - Type: <b>Color</b>
 - Maroon
-  - Type: <b>Color</b>
 - NavyBlue
-  - Type: <b>Color</b>
 - Olive
-  - Type: <b>Color</b>
 - Purple
-  - Type: <b>Color</b>
 - Red
-  - Type: <b>Color</b>
 - Silver
-  - Type: <b>Color</b>
 - Teal
-  - Type: <b>Color</b>
 - White
-  - Type: <b>Color</b>
 - Yellow
-  - Type: <b>Color</b>
 - Orange
-  - Type: <b>Color</b>
