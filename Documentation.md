@@ -12,4 +12,17 @@ This file intends to give a technical overview of the behavior of the classes of
 
 - Any Entity may contain other Entities, as children. This allows to extend the already defined Entities from this Library, by creating new Entities that contain multiple children. This concept is very useful to avoid code repetition and to abstract complex objects.
 
-#TODO
+## Entities
+
+### Table of Contents
+
+- [Rectangle](#rectangle)
+- [FillRectangle](#fillrectangle)
+- [Image](#image)
+
+
+## Rectangle
+
+## FillRectangle
+
+## Image
