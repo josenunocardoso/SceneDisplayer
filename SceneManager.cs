@@ -11,7 +11,6 @@ namespace SceneDisplayer {
     public static class SceneManager {
         private const int DEFAULT_SCREEN_WIDTH = 1000;
         private const int DEFAULT_SCREEN_HEIGHT = 600;
-        private static uint DELAY_TIME = (uint)(1000f / FPS);
 
 
         static SceneManager() {
@@ -26,7 +25,8 @@ namespace SceneDisplayer {
         private static Stack<Scene> Scenes { get; }
          
         private static Scene ActiveScene => Scenes.Peek();
-        private static uint FPS = 120u;
+        private static uint DELAY_TIME = (uint)(1000f / DEFAULT_FPS);
+        private const uint DEFAULT_FPS = 120u;
 
 
         /// <summary>
@@ -41,15 +41,14 @@ namespace SceneDisplayer {
         /// Gets the current desired frames per second of the renderer.
         /// </summary>
         public static uint GetFPS() {
-            return FPS;
+            return DEFAULT_FPS;
         }
 
         /// <summary>
         /// Sets the desired frames per second of the renderer. By default it is 120.
         /// </summary>
         public static void SetFPS(uint fps) {
-            FPS = fps;
-            DELAY_TIME = (uint)(1000f / FPS);
+            DELAY_TIME = (uint)(1000f / fps);
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace SceneDisplayer {
 
                 SDL.SDL_RenderPresent(_renderer);
                 
-                while (SDL.SDL_PollEvent(out SDL.SDL_Event e) != 0) {
+                if (SDL.SDL_PollEvent(out SDL.SDL_Event e) != 0) {
                     if (e.type == SDL.SDL_EventType.SDL_QUIT) {
                         running = false;
                         break;
@@ -186,10 +185,10 @@ namespace SceneDisplayer {
                         }
                     }
                 }
-                int delaytime = (int)(DELAY_TIME - delta);
-
-                if (delaytime > 0) {
-                    SDL.SDL_Delay((uint)delaytime);
+                
+                if (DELAY_TIME > delta) {
+                    uint delaytime = DELAY_TIME - delta;
+                    SDL.SDL_Delay(delaytime);
                 }
 
                 delta = SDL.SDL_GetTicks() - frameStartTime;
