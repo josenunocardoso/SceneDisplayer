@@ -59,21 +59,22 @@ namespace SceneDisplayer {
         /// </summary>
         /// <param name="x">Mouse Location X.</param>
         /// <param name="y">Mouse Location Y.</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
-        public void OnClick(int x, int y, int screenWidth, int screenHeight) {
+        /// <param name="mouseButton">Mouse Button pressed.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
+        public void OnClick(int x, int y, MouseButton mouseButton, int windowWidth, int windowHeight) {
             foreach (var entity in this.Entities) {
                 this.PerformActionOnAllChildren(entity, child => {
                     if (child is IClickable) {
                         var clickable = child as IClickable;
 
-                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y }, screenWidth, screenHeight)) {
+                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y }, windowWidth, windowHeight)) {
                             clickable.OnClick(new ClickArgs { X = x, Y = y });
                             return;
                         }
                     }
 
-                    child.OnMouseDown(new ClickArgs { X = x, Y = y });
+                    child.OnMouseDown(new ClickArgs { X = x, Y = y, Button = mouseButton });
                 });
             }
         }
@@ -83,12 +84,13 @@ namespace SceneDisplayer {
         /// </summary>
         /// <param name="x">Mouse Location X.</param>
         /// <param name="y">Mouse Location Y.</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
-        public void OnMouseUp(int x, int y, int screenWidth, int screenHeight) {
+        /// <param name="mouseButton">Mouse Button pressed.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
+        public void OnMouseUp(int x, int y, MouseButton mouseButton, int windowWidth, int windowHeight) {
             foreach (var entity in this.Entities) {
                 this.PerformActionOnAllChildren(entity, child => {
-                    child.OnMouseUp(new ClickArgs { X = x, Y = y });
+                    child.OnMouseUp(new ClickArgs { X = x, Y = y, Button = mouseButton });
                 });
             }
         }
@@ -108,12 +110,12 @@ namespace SceneDisplayer {
         /// <summary>
         /// Triggers a <c>WindowResized</c> event to all the <c>Entities</c>.
         /// </summary>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
-        public void OnWindowResized(int screenWidth, int screenHeight) {
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
+        public void OnWindowResized(int windowWidth, int windowHeight) {
             foreach (var entity in this.Entities) {
                 this.PerformActionOnAllChildren(entity, child => {
-                    child.OnWindowResize(new WindowArgs { Width = screenWidth, Height = screenHeight });
+                    child.OnWindowResize(new WindowArgs { Width = windowWidth, Height = windowHeight });
                 });
             }
         }

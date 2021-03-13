@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Collections.Generic;
 using SceneDisplayer.Utils;
 using SDL2;
@@ -126,12 +125,12 @@ namespace SceneDisplayer.Entities {
         /// The method is called once, for every frame rendered.
         /// </summary>
         /// <param name="renderer">Pointer to the renderer used.</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <param name="deltaTime">Time elapsed since the last draw call, in milliseconds.</param>
-        public virtual void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+        public virtual void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             foreach (var child in this.Children.Values) {
-                child.Draw(renderer, screenWidth, screenHeight, deltaTime);
+                child.Draw(renderer, windowWidth, windowHeight, deltaTime);
             }
         }
 
@@ -140,14 +139,14 @@ namespace SceneDisplayer.Entities {
         /// If <see cref="RelativeToScreenSize"/> is set to false, it returns an equivalent point.
         /// </summary>
         /// <param name="point">Point to convert</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute point.</returns>
-        protected SDL.SDL_Point GetAbsolutePoint(PointF point, int screenWidth, int screenHeight) {
+        protected SDL.SDL_Point GetAbsolutePoint(PointF point, int windowWidth, int windowHeight) {
             return this.RelativeToScreenSize
                 ? new SDL.SDL_Point {
-                    x = (int)(point.x * screenWidth),
-                    y = (int)(point.y * screenHeight)
+                    x = (int)(point.x * windowWidth),
+                    y = (int)(point.y * windowHeight)
                 }
                 : new SDL.SDL_Point {
                     x = (int)point.x, y = (int)point.y
@@ -158,13 +157,13 @@ namespace SceneDisplayer.Entities {
         /// Converts a point to a point, relative to the screen.
         /// </summary>
         /// <param name="point">Point to convert</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Relative point.</returns>
-        protected PointF AbsoluteToRelative(SDL.SDL_Point point, int screenWidth, int screenHeight) {
+        protected PointF AbsoluteToRelative(SDL.SDL_Point point, int windowWidth, int windowHeight) {
             return new PointF {
-                x = (float)point.x / screenWidth,
-                y = (float)point.y / screenHeight
+                x = (float)point.x / windowWidth,
+                y = (float)point.y / windowHeight
             };
         }
 
@@ -255,16 +254,16 @@ namespace SceneDisplayer.Entities {
         /// Returns the <see cref="Area"/>, with absolute values, in pixels.
         /// If <see cref="Entity.RelativeToScreenSize"/> is set to false, it returns an equivalent area.
         /// </summary>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute area.</returns>
-        protected SDL.SDL_Rect GetAbsoluteArea(int screenWidth, int screenHeight) {
+        protected SDL.SDL_Rect GetAbsoluteArea(int windowWidth, int windowHeight) {
             return this.RelativeToScreenSize
                 ? new SDL.SDL_Rect {
-                    x = (int)((this.Area.x - this.Area.w / 2) * screenWidth),
-                    y = (int)((this.Area.y - this.Area.h / 2) * screenHeight),
-                    w = (int)(this.Area.w * screenWidth),
-                    h = (int)(this.Area.h * screenHeight)
+                    x = (int)((this.Area.x - this.Area.w / 2) * windowWidth),
+                    y = (int)((this.Area.y - this.Area.h / 2) * windowHeight),
+                    w = (int)(this.Area.w * windowWidth),
+                    h = (int)(this.Area.h * windowHeight)
                 }
                 : new SDL.SDL_Rect {
                     x = (int)this.Area.x, y = (int)this.Area.y,
@@ -276,10 +275,10 @@ namespace SceneDisplayer.Entities {
         /// Returns the <see cref="Area"/>, with relative values.
         /// If <see cref="Entity.RelativeToScreenSize"/> is set to true, it returns an equivalent area.
         /// </summary>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Relative area.</returns>
-        protected RectF GetRelativeArea(int screenWidth, int screenHeight) {
+        protected RectF GetRelativeArea(int windowWidth, int windowHeight) {
             return this.RelativeToScreenSize
                 ? new RectF {
                     x = this.Area.x - this.Area.w / 2,
@@ -288,16 +287,16 @@ namespace SceneDisplayer.Entities {
                     h = this.Area.h
                 }
                 : new RectF {
-                    x = this.Area.x / screenWidth,
-                    y = this.Area.y / screenHeight,
-                    w = this.Area.w / screenWidth,
-                    h = this.Area.h / screenHeight
+                    x = this.Area.x / windowWidth,
+                    y = this.Area.y / windowHeight,
+                    w = this.Area.w / windowWidth,
+                    h = this.Area.h / windowHeight
                 };
         }
 
-        public bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight) {
-            var relPt = this.AbsoluteToRelative(point, screenWidth, screenHeight);
-            var relArea = this.GetRelativeArea(screenWidth, screenHeight);
+        public bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight) {
+            var relPt = this.AbsoluteToRelative(point, windowWidth, windowHeight);
+            var relArea = this.GetRelativeArea(windowWidth, windowHeight);
 
             return relArea.Contains(relPt);
         }
@@ -313,16 +312,21 @@ namespace SceneDisplayer.Entities {
         /// Mouse position Y.
         /// </summary>
         public int Y { get; set; }
+
+        /// <summary>
+        /// Mouse Button pressed.
+        /// </summary>
+        public MouseButton Button { get; set; }
     }
 
     public class WindowArgs : EventArgs {
         /// <summary>
-        /// Screen width.
+        /// Window width.
         /// </summary>
         public int Width { get; set; }
 
         /// <summary>
-        /// Screen height.
+        /// Window height.
         /// </summary>
         public int Height { get; set; }
     }

@@ -18,9 +18,9 @@ namespace SceneDisplayer.Entities {
         /// Returns if an absolute point is contained in this <c>Entity</c>.
         /// </summary>
         /// <param name="point">The point to test.</param>
-        /// <param name="screenWidth">Screen width in pixels.</param>
-        /// <param name="screenHeight">Screen height in pixels.</param>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>True if it is contained, False otherwise.</returns>
-        bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight);
+        bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight);
     }
 }

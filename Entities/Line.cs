@@ -40,13 +40,13 @@ namespace SceneDisplayer.Entities {
         public Color Color { get; set;}
 
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
             
             SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
 
-            SDL.SDL_Point point1 = this.GetAbsolutePoint(this.Source, screenWidth, screenHeight);
-            SDL.SDL_Point point2 = this.GetAbsolutePoint(this.Destination, screenWidth, screenHeight);
+            SDL.SDL_Point point1 = this.GetAbsolutePoint(this.Source, windowWidth, windowHeight);
+            SDL.SDL_Point point2 = this.GetAbsolutePoint(this.Destination, windowWidth, windowHeight);
             
             SDL.SDL_RenderDrawLine(renderer, point1.x, point1.y, point2.x, point2.y);
         }

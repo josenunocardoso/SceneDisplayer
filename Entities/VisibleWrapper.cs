@@ -33,10 +33,10 @@ namespace SceneDisplayer.Entities {
             this.AddChild(this.Key, this.entity);
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             if (!this.Visible) return;
             
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
         }
     }
 }

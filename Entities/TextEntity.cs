@@ -124,8 +124,8 @@ namespace SceneDisplayer.Entities {
             throw new NotSupportedException("The given TextAlignment is not supported");
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
             if (this.Font == null) return;
             
@@ -143,7 +143,7 @@ namespace SceneDisplayer.Entities {
 
             var (bitmapFont, w, h) = CachedBitmapFonts[key];
 
-            var loc = this.GetAbsolutePoint(this.Location, screenWidth, screenHeight);
+            var loc = this.GetAbsolutePoint(this.Location, windowWidth, windowHeight);
 
             var area = new SDL.SDL_Rect {
                 x = loc.x - w / 2,

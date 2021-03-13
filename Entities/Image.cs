@@ -90,8 +90,8 @@ namespace SceneDisplayer.Entities {
             CachedTextures[key] = texture;
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
             if (this.ImagePath == null) {
                 return;
@@ -105,7 +105,7 @@ namespace SceneDisplayer.Entities {
 
             var texture = CachedTextures[key];
 
-            var area = this.GetAbsoluteArea(screenWidth, screenHeight);
+            var area = this.GetAbsoluteArea(windowWidth, windowHeight);
 
             if (SDL.SDL_SetTextureAlphaMod(texture, this.Alpha) < 0) {
                 throw new NotSupportedException("The renderer does not support alpha modulation.");

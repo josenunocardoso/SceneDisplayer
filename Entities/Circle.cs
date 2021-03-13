@@ -53,8 +53,8 @@ namespace SceneDisplayer.Entities {
             this.Click?.Invoke(this, args);
         }
 
-        public bool Contains(SDL.SDL_Point point, int screenWidth, int screenHeight) {
-            var relPt = this.AbsoluteToRelative(point, screenWidth, screenHeight);
+        public bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight) {
+            var relPt = this.AbsoluteToRelative(point, windowWidth, windowHeight);
 
             return (relPt.x - this.Center.x) * (relPt.x - this.Center.x)
                 + (relPt.y - this.Center.y) * (relPt.y - this.Center.y) <= this.Radius * this.Radius;
@@ -67,11 +67,11 @@ namespace SceneDisplayer.Entities {
             }
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
-            var center = this.GetAbsolutePoint(this.Center, screenWidth, screenHeight);
-            float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, screenWidth, screenHeight).x;
+            var center = this.GetAbsolutePoint(this.Center, windowWidth, windowHeight);
+            float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
 
             float sides = this.Sides;
             if (sides == 0) {

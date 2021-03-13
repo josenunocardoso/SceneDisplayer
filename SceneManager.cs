@@ -162,14 +162,20 @@ namespace SceneDisplayer {
                         var buttonEvent = e.button;
 
                         if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
-                            MouseLeftDown(buttonEvent.x, buttonEvent.y, w, h);
+                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.LEFT, w, h);
+                        }
+                        if (buttonEvent.button == SDL.SDL_BUTTON_RIGHT) {
+                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.RIGHT, w, h);
                         }
                     }
                     if (e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONUP) {
                         var buttonEvent = e.button;
 
                         if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
-                            MouseLeftUp(buttonEvent.x, buttonEvent.y, w, h);
+                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.LEFT, w, h);
+                        }
+                        if (buttonEvent.button == SDL.SDL_BUTTON_RIGHT) {
+                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.RIGHT, w, h);
                         }
                     }
                     if (e.type == SDL.SDL_EventType.SDL_KEYDOWN) {
@@ -218,12 +224,12 @@ namespace SceneDisplayer {
         }
 
 
-        private static void MouseLeftDown(int x, int y, int screenWidth, int screenHeight) {
-            ActiveScene?.OnClick(x, y, screenWidth, screenHeight);
+        private static void MouseDown(int x, int y, MouseButton mouseButton, int windowWidth, int windowHeight) {
+            ActiveScene?.OnClick(x, y, mouseButton, windowWidth, windowHeight);
         }
 
-        private static void MouseLeftUp(int x, int y, int screenWidth, int screenHeight) {
-            ActiveScene?.OnMouseUp(x, y, screenWidth, screenHeight);
+        private static void MouseUp(int x, int y, MouseButton mouseButton, int windowWidth, int windowHeight) {
+            ActiveScene?.OnMouseUp(x, y, mouseButton, windowWidth, windowHeight);
         }
 
         private static void KeyDown(SDL.SDL_Keycode key) {
@@ -249,5 +255,10 @@ namespace SceneDisplayer {
         MESSAGEBOX_ERROR = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
         MESSAGEBOX_WARNING = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_WARNING,
         MESSAGEBOX_INFORMATION = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_INFORMATION
+    }
+
+    public enum MouseButton {
+        LEFT,
+        RIGHT
     }
 }

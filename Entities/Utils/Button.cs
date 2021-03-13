@@ -88,10 +88,10 @@ namespace SceneDisplayer.Entities.Utils {
             };
         }
 
-        public override void Draw(IntPtr renderer, int screenWidth, int screenHeight, uint deltaTime) {
-            base.Draw(renderer, screenWidth, screenHeight, deltaTime);
+        public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
-            var area = this.GetAbsoluteArea(screenWidth, screenHeight);
+            var area = this.GetAbsoluteArea(windowWidth, windowHeight);
 
             var textEntity = this.Children["Text"] as TextEntity;
             textEntity.Location = TextEntity.GetTextAbsoluteLocation(this.Alignment, area);
