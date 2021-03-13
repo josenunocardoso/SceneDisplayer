@@ -70,6 +70,10 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
+            if (!this.Traits.Visible) {
+                return;
+            }
+
             var center = this.GetAbsolutePoint(this.Center, windowWidth, windowHeight);
             float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
 
@@ -92,7 +96,7 @@ namespace SceneDisplayer.Entities {
                 
                 angle += d_a;
 
-                var line = this.Children[("Side", i)] as Line;
+                var line = this.GetChild<Line>(("Side", i));
                 line.Source = start;
                 line.Destination = end;
                 line.Color = this.Color;

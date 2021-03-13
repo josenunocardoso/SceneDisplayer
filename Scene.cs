@@ -121,7 +121,7 @@ namespace SceneDisplayer {
         }
 
         private void PerformActionOnAllChildren(Entity entity, Action<Entity> action) {
-            foreach (var child in entity.Children.Values) {
+            foreach (var child in entity.GetChildren()) {
                 this.PerformActionOnAllChildren(child, action);
             }
 

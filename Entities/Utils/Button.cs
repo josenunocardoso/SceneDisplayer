@@ -79,11 +79,11 @@ namespace SceneDisplayer.Entities.Utils {
             
             this.PropertyChanged += (_, e) => {
                 if (e.PropertyName == nameof(this.Area)) {
-                    (this.Children["Rectangle"] as FillRectangle).Area = this.Area;
-                    (this.Children["Border"] as Rectangle).Area = this.Area;
+                    this.GetChild<FillRectangle>("Rectangle").Area = this.Area;
+                    this.GetChild<Rectangle>("Border").Area = this.Area;
                 }
                 if (e.PropertyName == nameof(this.BackgroundColor)) {
-                    (this.Children["Rectangle"] as FillRectangle).Color = this.BackgroundColor;
+                    this.GetChild<FillRectangle>("Rectangle").Color = this.BackgroundColor;
                 }
             };
         }
@@ -91,9 +91,13 @@ namespace SceneDisplayer.Entities.Utils {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
+            if (!this.Traits.Visible) {
+                return;
+            }
+
             var area = this.GetAbsoluteArea(windowWidth, windowHeight);
 
-            var textEntity = this.Children["Text"] as TextEntity;
+            var textEntity = this.GetChild<TextEntity>("Text");
             textEntity.Location = TextEntity.GetTextAbsoluteLocation(this.Alignment, area);
         }
 
@@ -113,7 +117,7 @@ namespace SceneDisplayer.Entities.Utils {
         /// <param name="fontSize">The new font size.</param>
         /// <param name="textColor">The new text color.</param>
         public void UpdateText(string text, string font, int fontSize, Color textColor) {
-            var textEntity = this.Children["Text"] as TextEntity;
+            var textEntity = this.GetChild<TextEntity>("Text");
             textEntity.Text = text;
             textEntity.Font = font;
             textEntity.FontSize = fontSize;

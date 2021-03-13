@@ -18,6 +18,7 @@ namespace SceneDisplayer.Entities {
         protected Entity(bool relativeToScreenSize = true) {
             this.RelativeToScreenSize = relativeToScreenSize;
             this.Children = new Dictionary<object, Entity>();
+            this.Traits = new Traits(true);
         }
 
 
@@ -37,7 +38,12 @@ namespace SceneDisplayer.Entities {
         /// The children of this Entity.
         /// </summary>
         /// <value>A <see cref="Dictionary{TKey, TValue}"/>, where <c>TKey</c> is the <see cref="Key"/> of the child, and <c>TValue</c> is the child itself.</value>
-        public Dictionary<object, Entity> Children { get; }
+        private Dictionary<object, Entity> Children { get; }
+
+        /// <summary>
+        /// This Entity Traits.
+        /// </summary>
+        public Traits Traits { get; set; }
 
 
         /// <summary>
@@ -62,19 +68,92 @@ namespace SceneDisplayer.Entities {
         }
 
         /// <summary>
+        /// Returns a child of this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="key"><see cref="Key"/> of the child.</param>
+        /// <returns>The child.</returns>
+        /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the child does not exist.</exception>
+        public Entity GetChild(object key) {
+            if (!this.Children.ContainsKey(key)) {
+                throw new ArgumentException("Child does not exist");
+            }
+
+            return this.Children[key];
+        }
+
+        /// <summary>
+        /// Returns a child of this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="key"><see cref="Key"/> of the child.</param>
+        /// <typeparam name="T">Type of the child.</typeparam>
+        /// <returns>The child.</returns>
+        /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the child does not exist,
+        /// or if the child is not of the given type.</exception>
+        public T GetChild<T>(object key) where T : Entity {
+            if (!this.Children.ContainsKey(key)) {
+                throw new ArgumentException("Child does not exist");
+            }
+
+            if (!(this.Children[key] is T)) {
+                throw new ArgumentException("Child is not of the given type");
+            }
+
+            return (T)this.Children[key];
+        }
+
+        /// <summary>
+        /// Returns all this <see cref="Entity"/> children.
+        /// </summary>
+        /// <returns>The children.</returns>
+        public Dictionary<object, Entity>.ValueCollection GetChildren() {
+            return this.Children.Values;
+        }
+
+        /// <summary>
+        /// Replaces an existing <see cref="Entity"/>, initializes it and disposes the original <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="key"><see cref="Key"/> of the child.</param>
+        /// <param name="newChild">The new <see cref="Entity"/> to be added.</param>
+        /// <exception cref="ArgumentNullException">Throws an <see cref="ArgumentNullException"/> if the <c>newChild</c> is null.</exception>
+        /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the <c>newChild</c> does not exist.</exception>
+        public void EditChild(object key, Entity newChild) {
+            if (newChild == null) {
+                throw new ArgumentNullException(nameof(newChild));
+            }
+
+            if (!this.HasChild(key)) {
+                throw new ArgumentException("Child does not exist");
+            }
+
+            this.Children[key].Dispose();
+
+            newChild.Key = key;
+            this.Children[key] = newChild;
+            newChild.Init();
+        }
+
+        /// <summary>
+        /// Returns whether this <see cref="Entity"/> has a child or not.
+        /// </summary>
+        /// <param name="key">The <c>key</c> of the child.</param>
+        /// <returns>True if this <see cref="Entity"/> has the given child, False otherwise.</returns>
+        public bool HasChild(object key) {
+            return this.Children.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Removes a <c>child</c> and disposes it.
         /// </summary>
         /// <param name="key">The <c>key</c> of the child to be removed.</param>
-        /// <returns>The <see cref="Entity"/> removed.</returns>
         /// <exception cref="ArgumentException">Throws an <see cref="ArgumentException"/> if the <c>child</c> does not exist.</exception>
-        public bool RemoveChild(object key) {
+        public void RemoveChild(object key) {
             if (!this.Children.ContainsKey(key)) {
                 throw new ArgumentException("Child does not exist");
             }
 
             this.Children[key].Dispose();
 
-            return this.Children.Remove(key);
+            this.Children.Remove(key);
         }
 
         /// <summary>
@@ -129,6 +208,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <param name="deltaTime">Time elapsed since the last draw call, in milliseconds.</param>
         public virtual void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
+            if (!this.Traits.Visible) {
+                return;
+            }
+
             foreach (var child in this.Children.Values) {
                 child.Draw(renderer, windowWidth, windowHeight, deltaTime);
             }
@@ -300,6 +383,20 @@ namespace SceneDisplayer.Entities {
 
             return relArea.Contains(relPt);
         }
+    }
+
+    public sealed class Traits {
+
+        public Traits(bool visible) {
+            this.Visible = visible;
+        }
+
+
+        /// <summary>
+        /// Whether this Entity and its children will be drawn.
+        /// </summary>
+        /// <value>True to display this Entity and its children, False otherwise.</value>
+        public bool Visible { get; set; }
     }
 
     public class ClickArgs : EventArgs {

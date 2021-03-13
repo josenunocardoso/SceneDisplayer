@@ -127,6 +127,10 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
+            if (!this.Traits.Visible) {
+                return;
+            }
+
             if (this.Font == null) return;
             
             var key = new FontCharacteristics(this.Text, this.Font, this.FontSize, this.TextColor);

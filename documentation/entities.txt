@@ -28,5 +28,4 @@ RectangularEntity <|-- Image
 Entity <|-- TextEntity
 Entity <|-- Circle
 Entity <|-- Line
-Entity <|-- VisibleWrapper
 @enduml

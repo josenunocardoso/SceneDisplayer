@@ -14,7 +14,7 @@ namespace SceneDisplayer.Entities {
         }
 
         /// <summary>
-        /// Constructs a opaque <c>Image</c>.
+        /// Constructs an opaque <c>Image</c>.
         /// </summary>
         /// <param name="area">The area of the <c>Image</c>.</param>
         /// <param name="path">The path of the texture of the <c>Image</c>. (e.g. a jpg or bmp file)</param>
@@ -92,6 +92,10 @@ namespace SceneDisplayer.Entities {
 
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
+
+            if (!this.Traits.Visible) {
+                return;
+            }
 
             if (this.ImagePath == null) {
                 return;
