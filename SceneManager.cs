@@ -146,6 +146,7 @@ namespace SceneDisplayer {
 
                 if (ActiveScene != null) {
                     foreach (var entity in ActiveScene.Entities) {
+                        entity.Update(w, h, delta);
                         entity.Draw(_renderer, w, h, delta);
                     }
                     ActiveScene.OnUpdate();

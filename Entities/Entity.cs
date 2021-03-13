@@ -200,8 +200,23 @@ namespace SceneDisplayer.Entities {
         public virtual void Init() { }
 
         /// <summary>
+        /// Should be called to update the state of the <c>Entity</c>.
+        /// Updates the <c>Entity</c>. It is called by the <see cref="SceneManager.Render"/> method.
+        /// The method is called once, for every frame rendered, before the <see cref="Draw"/> method.
+        /// </summary>
+        /// <param name="windowWidth">Window width in pixels.</param>
+        /// <param name="windowHeight">Window height in pixels.</param>
+        /// <param name="deltaTime">Time elapsed since the last draw call, in milliseconds.</param>
+        public virtual void Update(int windowWidth, int windowHeight, uint deltaTime) {
+            foreach (var child in this.Children.Values) {
+                child.Update(windowWidth, windowHeight, deltaTime);
+            }
+        }
+
+        /// <summary>
+        /// Should be called to do rendering logic.
         /// Draws the <c>Entity</c>. It is called by the <see cref="SceneManager.Render"/> method.
-        /// The method is called once, for every frame rendered.
+        /// The method is called once, for every frame rendered, after the <see cref="Update"/> method.
         /// </summary>
         /// <param name="renderer">Pointer to the renderer used.</param>
         /// <param name="windowWidth">Window width in pixels.</param>
