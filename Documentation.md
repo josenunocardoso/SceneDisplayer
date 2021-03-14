@@ -12,7 +12,6 @@ This file intends to give a technical overview of the behavior of the classes of
   - [TextEntity](#textentity)
   - [Circle](#circle)
   - [Line](#line)
-  - [VisibleWrapper](#visiblewrapper)
 - [Utils](#utils)
   - [RectF](#rectf)
   - [PointF](#pointf)
@@ -78,7 +77,16 @@ A component that is displayed on a Scene. It may contain other Entities as child
 - <b>Init</b>: Initializes the Entity. It is called when an Entity is added.
   - Empty virtual method; can be overriden by sub-classes of Entity.
 
-- <b>Draw</b>: Draws the Entity. It is called by the SceneManager.Render method. The method is called once, for every frame rendered.
+- <b>Update</b>: Should be called to update the state of the Entity. Updates the Entity. It is called by the SceneManager.Render method. The method is called once, for every frame rendered.
+  - Virtual method, that calls recursively the Update method on its children. base.Update must be called at the beginning, if this method is overriden.
+  - windowWidth: Window width in pixels.
+    - Type: <b>int</b>
+  - windowHeight: Window height in pixels.
+    - Type: <b>int</b>
+  - deltaTime: Time elapsed since the last draw call, in milliseconds.
+    - Type: <b>uint</b>
+
+- <b>Draw</b>: Should be called to do rendering logic. Draws the Entity. It is called by the SceneManager.Render method. The method is called once, for every frame rendered.
   - Virtual method, that calls recursively the Draw method on its children. base.Draw must be called at the beginning, if this method is overriden.
   - renderer: Pointer to the renderer used.
     - Type: <b>IntPtr</b>
@@ -237,18 +245,6 @@ An Entity that renders a line.
 - <b>Color</b>: The color of the Line.
   - Type: [<b>Color</b>](#color)
 - [<b>RelativeToScreenSize</b>](#entity)
-
-### VisibleWrapper
-
-#### Description
-An Entity that encapsulates another Entity and manages whether that Entity is visible or not.
-
-#### Properties
-
-- <b>Visible</b>: Whether the child is set to be rendered, or not.
-  - Type: <b>bool</b>
-- <b>Entity</b>: The encapsulated Entity.
-  - Type: [<b>Entity</b>](#entity)
 
 
 ## Utils
