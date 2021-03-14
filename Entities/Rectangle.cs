@@ -29,7 +29,7 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
-            if (!this.Traits.Visible) {
+            if (!this.EntityTraits.Visible) {
                 return;
             }
 

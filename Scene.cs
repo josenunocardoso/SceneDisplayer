@@ -68,7 +68,7 @@ namespace SceneDisplayer {
                     if (child is IClickable) {
                         var clickable = child as IClickable;
 
-                        if (clickable.Contains(new SDL.SDL_Point { x = x, y = y }, windowWidth, windowHeight)) {
+                        if (clickable.Contains((x, y), windowWidth, windowHeight)) {
                             clickable.OnClick(new ClickArgs { X = x, Y = y, Button = mouseButton });
                             return;
                         }

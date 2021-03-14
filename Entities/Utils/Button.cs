@@ -72,8 +72,8 @@ namespace SceneDisplayer.Entities.Utils {
 
 
         public override void Init() {
-            this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.Traits.Scale));
-            this.AddChild("Border", new Rectangle(this.Area, new Color(), this.Traits.Scale));
+            this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.EntityTraits.Scale));
+            this.AddChild("Border", new Rectangle(this.Area, new Color(), this.EntityTraits.Scale));
             this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
                 this.TextColor, new PointF(), Scale.AbsoluteInPixels));
             
@@ -91,7 +91,7 @@ namespace SceneDisplayer.Entities.Utils {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
-            if (!this.Traits.Visible) {
+            if (!this.EntityTraits.Visible) {
                 return;
             }
 

@@ -52,7 +52,7 @@ namespace SceneDisplayer.Entities {
             this.Click?.Invoke(this, args);
         }
 
-        public bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight) {
+        public bool Contains((int, int) point, int windowWidth, int windowHeight) {
             var relPt = this.AbsoluteToRelative(point, windowWidth, windowHeight);
 
             return (relPt.x - this.Center.x) * (relPt.x - this.Center.x)
@@ -69,7 +69,7 @@ namespace SceneDisplayer.Entities {
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
-            if (!this.Traits.Visible) {
+            if (!this.EntityTraits.Visible) {
                 return;
             }
 

@@ -21,6 +21,6 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowWidth">Window width in pixels.</param>
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>True if it is contained, False otherwise.</returns>
-        bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight);
+        bool Contains((int, int) point, int windowWidth, int windowHeight);
     }
 }

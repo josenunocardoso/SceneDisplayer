@@ -16,7 +16,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
         protected Entity(Scale scale = Scale.RelativeToScreen) {
             this.Children = new Dictionary<object, Entity>();
-            this.Traits = new Traits(true, scale);
+            this.EntityTraits = new EntityTraits(true, scale);
         }
 
 
@@ -42,7 +42,7 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// This Entity Traits.
         /// </summary>
-        public Traits Traits { get; set; }
+        public EntityTraits EntityTraits { get; set; }
 
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <param name="deltaTime">Time elapsed since the last draw call, in milliseconds.</param>
         public virtual void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
-            if (!this.Traits.Visible) {
+            if (!this.EntityTraits.Visible) {
                 return;
             }
 
@@ -249,7 +249,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute point.</returns>
         protected SDL.SDL_Point GetAbsolutePoint(PointF point, int windowWidth, int windowHeight) {
-            switch (this.Traits.Scale) {
+            switch (this.EntityTraits.Scale) {
                 case Scale.RelativeToScreen:
                     return new SDL.SDL_Point {
                         x = (int)(point.x * windowWidth),
@@ -271,10 +271,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowWidth">Window width in pixels.</param>
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Relative point.</returns>
-        protected PointF AbsoluteToRelative(SDL.SDL_Point point, int windowWidth, int windowHeight) {
+        protected PointF AbsoluteToRelative((int, int) point, int windowWidth, int windowHeight) {
             return new PointF {
-                x = (float)point.x / windowWidth,
-                y = (float)point.y / windowHeight
+                x = (float)point.Item1 / windowWidth,
+                y = (float)point.Item2 / windowHeight
             };
         }
 
@@ -324,6 +324,9 @@ namespace SceneDisplayer.Entities {
     /// </summary>
     public abstract class RectangularEntity : Entity, IClickable {
         private RectF area;
+        private bool _dragging = false;
+        private PointF? _lastDraggedMousePos = null;
+        private PointF? _relativeDragPos = null;
 
         /// <summary>
         /// Constructs a <c>RectangularEntity</c>.
@@ -332,6 +335,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
         protected RectangularEntity(RectF area, Scale scale) : base(scale) {
             this.Area = area;
+            this.RectangularEntityTraits = new RectangularEntityTraits(Drag.NotDraggable);
+
+            this.Click += this.OnClick;
+            this.MouseUp += this.OnMouseUp;
         }
 
 
@@ -347,10 +354,56 @@ namespace SceneDisplayer.Entities {
             }
         }
 
+        /// <summary>
+        /// This Rectangular Entity Traits.
+        /// </summary>
+        public RectangularEntityTraits RectangularEntityTraits { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event EventHandler<ClickArgs> Click;
+
+
+        public override void Update(int windowWidth, int windowHeight, uint deltaTime) {
+            base.Update(windowWidth, windowHeight, deltaTime);
+
+            if (this.RectangularEntityTraits.Drag != Drag.NotDraggable) {
+                var mousePos = this.AbsoluteToRelative(SceneManager.GetMousePosition(),
+                    windowWidth, windowHeight);
+
+                if (this._dragging && !mousePos.Equals(this._lastDraggedMousePos)) {
+                    if (this.RectangularEntityTraits.Drag == Drag.DraggableAtCenter) {
+                        this.Area = new RectF(mousePos.x, mousePos.y, this.Area.w, this.Area.h);
+                    }
+                    else if (this.RectangularEntityTraits.Drag == Drag.Draggable) {
+                        this.Area = new RectF(
+                            mousePos.x + this._relativeDragPos.Value.x,
+                            mousePos.y + this._relativeDragPos.Value.y,
+                            this.Area.w, this.Area.h
+                        );
+                    }
+                }
+            }
+        }
+
+        private void OnClick(object sender, ClickArgs e) {
+            if (e.Button == MouseButton.Left) {
+                var (windowWidth, windowHeight) = SceneManager.GetWindowSize();
+
+                this._dragging = true;
+                this._lastDraggedMousePos = this.AbsoluteToRelative(SceneManager.GetMousePosition(),
+                    windowWidth, windowHeight);
+                this._relativeDragPos = new PointF(this.Area.x, this.Area.y) - this._lastDraggedMousePos;
+            }
+        }
+
+        private void OnMouseUp(object sender, ClickArgs e) {
+            if (e.Button == MouseButton.Left) {
+                this._dragging = false;
+                this._lastDraggedMousePos = null;
+            }
+        }
 
         public void OnClick(ClickArgs args) {
             this.Click?.Invoke(this, args);
@@ -372,7 +425,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute area.</returns>
         protected SDL.SDL_Rect GetAbsoluteArea(int windowWidth, int windowHeight) {
-            switch (this.Traits.Scale) {
+            switch (this.EntityTraits.Scale) {
                 case Scale.RelativeToScreen:
                     return new SDL.SDL_Rect {
                         x = (int)((this.Area.x - this.Area.w / 2) * windowWidth),
@@ -398,7 +451,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Relative area.</returns>
         protected RectF GetRelativeArea(int windowWidth, int windowHeight) {
-            switch (this.Traits.Scale) {
+            switch (this.EntityTraits.Scale) {
                 case Scale.RelativeToScreen:
                     return new RectF {
                         x = this.Area.x - this.Area.w / 2,
@@ -418,7 +471,7 @@ namespace SceneDisplayer.Entities {
             throw new NotSupportedException("Given scale is not supported yet");
         }
 
-        public bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight) {
+        public bool Contains((int, int) point, int windowWidth, int windowHeight) {
             var relPt = this.AbsoluteToRelative(point, windowWidth, windowHeight);
             var relArea = this.GetRelativeArea(windowWidth, windowHeight);
 
@@ -426,9 +479,9 @@ namespace SceneDisplayer.Entities {
         }
     }
 
-    public sealed class Traits {
+    public sealed class EntityTraits {
 
-        public Traits(bool visible, Scale scale) {
+        public EntityTraits(bool visible, Scale scale) {
             this.Visible = visible;
             this.Scale = scale;
         }
@@ -446,6 +499,19 @@ namespace SceneDisplayer.Entities {
         public Scale Scale { get; set; }
     }
 
+    public sealed class RectangularEntityTraits {
+
+        public RectangularEntityTraits(Drag drag) {
+            this.Drag = drag;
+        }
+
+
+        /// <summary>
+        /// The dragging behavior of the <c>Entity</c>.
+        /// </summary>
+        public Drag Drag { get; set; }
+    }
+
     public enum Scale {
         /// <summary>
         /// The position and the size are defined in pixels.
@@ -455,6 +521,21 @@ namespace SceneDisplayer.Entities {
         /// The position and the size are relative to the screen [0;1].
         /// </summary>
         RelativeToScreen
+    }
+
+    public enum Drag {
+        /// <summary>
+        /// Makes the <c>Entity</c> not draggable.
+        /// </summary>
+        NotDraggable,
+        /// <summary>
+        /// Makes the <c>Entity</c> draggable.
+        /// </summary>
+        Draggable,
+        /// <summary>
+        /// Makes the <c>Entity</c> draggable, and the <c>Entity</c> center is dragged on the mouse location.
+        /// </summary>
+        DraggableAtCenter
     }
 
     public class ClickArgs : EventArgs {

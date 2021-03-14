@@ -59,6 +59,24 @@ namespace SceneDisplayer.Utils {
                 && point.y >= this.y && point.y <= this.y + this.h;
         }
 
+
+        public static RectF operator +(RectF r1, RectF r2) {
+            return new RectF(r1.x + r2.x, r1.y + r2.y, r1.w + r2.w, r1.h + r2.h);
+        }
+
+        public static RectF operator +(RectF r, PointF p) {
+            return new RectF(r.x + p.x, r.y + p.y, r.w, r.h);
+        }
+
+        public static RectF operator -(RectF r1, RectF r2) {
+            return new RectF(r1.x - r2.x, r1.y - r2.y, r1.w - r2.w, r1.h - r2.h);
+        }
+
+        public static RectF operator *(RectF r1, RectF r2) {
+            return new RectF(r1.x * r2.x, r1.y * r2.y, r1.w * r2.w, r1.h * r2.h);
+        }
+
+
         public override string ToString() {
             return $"({x};{y};{w};{h})";
         }
