@@ -14,10 +14,9 @@ namespace SceneDisplayer.Entities {
         /// <param name="src">The source point of the <c>Line</c>.</param>
         /// <param name="dst">The destination point of the <c>Line</c>.</param>
         /// <param name="color">The color of the <c>Line</c>.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public Line(PointF src, PointF dst, Color color, bool relativeToScreenSize = true)
-        : base(relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public Line(PointF src, PointF dst, Color color, Scale scale = Scale.RelativeToScreen)
+        : base(scale) {
             this.Source = src;
             this.Destination = dst;
             this.Color = color;

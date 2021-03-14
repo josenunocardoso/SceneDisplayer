@@ -13,12 +13,10 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// Constructs an <c>Entity</c>.
         /// </summary>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        protected Entity(bool relativeToScreenSize = true) {
-            this.RelativeToScreenSize = relativeToScreenSize;
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        protected Entity(Scale scale = Scale.RelativeToScreen) {
             this.Children = new Dictionary<object, Entity>();
-            this.Traits = new Traits(true);
+            this.Traits = new Traits(true, scale);
         }
 
 
@@ -32,6 +30,7 @@ namespace SceneDisplayer.Entities {
         /// Flag indicating if the positions in this Entity are assumed to be relative to the screen, or not.
         /// </summary>
         /// <value>True if it is relative to the screen, False otherwise.</value>
+        [Obsolete("Use Traits.Scale instead")]
         protected bool RelativeToScreenSize { get; }
 
         /// <summary>
@@ -65,6 +64,15 @@ namespace SceneDisplayer.Entities {
             child.Key = key;
             this.Children.Add(key, child);
             child.Init();
+        }
+
+        /// <summary>
+        /// Adds an <see cref="Entity"/> as a new child, and initializes it.
+        /// </summary>
+        /// <param name="child"><see cref="Entity"/> to be added.</param>
+        /// <exception cref="ArgumentNullException">Throws an <see cref="ArgumentNullException"/> if the <c>child</c> is null.</exception>
+        public void AddChild(Entity child) {
+            this.AddChild(new DummyKey(), child);
         }
 
         /// <summary>
@@ -241,14 +249,19 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute point.</returns>
         protected SDL.SDL_Point GetAbsolutePoint(PointF point, int windowWidth, int windowHeight) {
-            return this.RelativeToScreenSize
-                ? new SDL.SDL_Point {
-                    x = (int)(point.x * windowWidth),
-                    y = (int)(point.y * windowHeight)
-                }
-                : new SDL.SDL_Point {
-                    x = (int)point.x, y = (int)point.y
-                };
+            switch (this.Traits.Scale) {
+                case Scale.RelativeToScreen:
+                    return new SDL.SDL_Point {
+                        x = (int)(point.x * windowWidth),
+                        y = (int)(point.y * windowHeight)
+                    };
+                case Scale.AbsoluteInPixels:
+                    return new SDL.SDL_Point {
+                        x = (int)point.x, y = (int)point.y
+                    };
+            }
+
+            throw new NotSupportedException("Given scale is not supported yet");
         }
 
         /// <summary>
@@ -300,6 +313,10 @@ namespace SceneDisplayer.Entities {
                 child.Dispose();
             }
         }
+    
+        class DummyKey {
+
+        }
     }
 
     /// <summary>
@@ -312,9 +329,8 @@ namespace SceneDisplayer.Entities {
         /// Constructs a <c>RectangularEntity</c>.
         /// </summary>
         /// <param name="area">The area of the rectangular shape.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        protected RectangularEntity(RectF area, bool relativeToScreenSize) : base(relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        protected RectangularEntity(RectF area, Scale scale) : base(scale) {
             this.Area = area;
         }
 
@@ -356,17 +372,22 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Absolute area.</returns>
         protected SDL.SDL_Rect GetAbsoluteArea(int windowWidth, int windowHeight) {
-            return this.RelativeToScreenSize
-                ? new SDL.SDL_Rect {
-                    x = (int)((this.Area.x - this.Area.w / 2) * windowWidth),
-                    y = (int)((this.Area.y - this.Area.h / 2) * windowHeight),
-                    w = (int)(this.Area.w * windowWidth),
-                    h = (int)(this.Area.h * windowHeight)
-                }
-                : new SDL.SDL_Rect {
-                    x = (int)this.Area.x, y = (int)this.Area.y,
-                    w = (int)this.Area.w, h = (int)this.Area.h
-                };
+            switch (this.Traits.Scale) {
+                case Scale.RelativeToScreen:
+                    return new SDL.SDL_Rect {
+                        x = (int)((this.Area.x - this.Area.w / 2) * windowWidth),
+                        y = (int)((this.Area.y - this.Area.h / 2) * windowHeight),
+                        w = (int)(this.Area.w * windowWidth),
+                        h = (int)(this.Area.h * windowHeight)
+                    };
+                case Scale.AbsoluteInPixels:
+                    return new SDL.SDL_Rect {
+                        x = (int)this.Area.x, y = (int)this.Area.y,
+                        w = (int)this.Area.w, h = (int)this.Area.h
+                    };
+            }
+
+            throw new NotSupportedException("Given scale is not supported yet");
         }
 
         /// <summary>
@@ -377,19 +398,24 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>Relative area.</returns>
         protected RectF GetRelativeArea(int windowWidth, int windowHeight) {
-            return this.RelativeToScreenSize
-                ? new RectF {
-                    x = this.Area.x - this.Area.w / 2,
-                    y = this.Area.y - this.Area.h / 2,
-                    w = this.Area.w,
-                    h = this.Area.h
-                }
-                : new RectF {
-                    x = this.Area.x / windowWidth,
-                    y = this.Area.y / windowHeight,
-                    w = this.Area.w / windowWidth,
-                    h = this.Area.h / windowHeight
-                };
+            switch (this.Traits.Scale) {
+                case Scale.RelativeToScreen:
+                    return new RectF {
+                        x = this.Area.x - this.Area.w / 2,
+                        y = this.Area.y - this.Area.h / 2,
+                        w = this.Area.w,
+                        h = this.Area.h
+                    };
+                case Scale.AbsoluteInPixels:
+                    return new RectF {
+                        x = this.Area.x / windowWidth,
+                        y = this.Area.y / windowHeight,
+                        w = this.Area.w / windowWidth,
+                        h = this.Area.h / windowHeight
+                    };
+            }
+
+            throw new NotSupportedException("Given scale is not supported yet");
         }
 
         public bool Contains(SDL.SDL_Point point, int windowWidth, int windowHeight) {
@@ -402,8 +428,9 @@ namespace SceneDisplayer.Entities {
 
     public sealed class Traits {
 
-        public Traits(bool visible) {
+        public Traits(bool visible, Scale scale) {
             this.Visible = visible;
+            this.Scale = scale;
         }
 
 
@@ -412,6 +439,22 @@ namespace SceneDisplayer.Entities {
         /// </summary>
         /// <value>True to display this Entity and its children, False otherwise.</value>
         public bool Visible { get; set; }
+
+        /// <summary>
+        /// The scaling behavior of the <c>Entity</c>.
+        /// </summary>
+        public Scale Scale { get; set; }
+    }
+
+    public enum Scale {
+        /// <summary>
+        /// The position and the size are defined in pixels.
+        /// </summary>
+        AbsoluteInPixels,
+        /// <summary>
+        /// The position and the size are relative to the screen [0;1].
+        /// </summary>
+        RelativeToScreen
     }
 
     public class ClickArgs : EventArgs {

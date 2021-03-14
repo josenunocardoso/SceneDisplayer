@@ -22,11 +22,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="fontSize">The font size.</param>
         /// <param name="textColor">The text color.</param>
         /// <param name="location">The location of this <c>Entity</c></param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
         public TextEntity(string text, string font, int fontSize, Color textColor,
-        PointF location, bool relativeToScreenSize = true)
-        : base(relativeToScreenSize) {
+        PointF location, Scale scale = Scale.RelativeToScreen)
+        : base(scale) {
             this.Text = text;
             this.Font = font;
             this.FontSize = fontSize;

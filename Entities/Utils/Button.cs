@@ -19,11 +19,10 @@ namespace SceneDisplayer.Entities.Utils {
         /// <param name="font">The font path of the <c>Button</c>.</param>
         /// <param name="fontSize">The font size of the <c>Button</c>.</param>
         /// <param name="textColor">The text color of the <c>Button</c>.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
         public Button(RectF area, Color backgroundColor, TextAlignment alignment,
-        string text, string font, int fontSize, Color textColor, bool relativeToScreenSize = true)
-        : base(area, relativeToScreenSize) {
+        string text, string font, int fontSize, Color textColor, Scale scale = Scale.RelativeToScreen)
+        : base(area, scale) {
             this.BackgroundColor = backgroundColor;
             this.Alignment = alignment;
             this.Text = text;
@@ -73,9 +72,10 @@ namespace SceneDisplayer.Entities.Utils {
 
 
         public override void Init() {
-            this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.RelativeToScreenSize));
-            this.AddChild("Border", new Rectangle(this.Area, new Color(), this.RelativeToScreenSize));
-            this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize, this.TextColor, new PointF(), false));
+            this.AddChild("Rectangle", new FillRectangle(this.Area, this.BackgroundColor, this.Traits.Scale));
+            this.AddChild("Border", new Rectangle(this.Area, new Color(), this.Traits.Scale));
+            this.AddChild("Text", new TextEntity(this.Text, this.Font, this.FontSize,
+                this.TextColor, new PointF(), Scale.AbsoluteInPixels));
             
             this.PropertyChanged += (_, e) => {
                 if (e.PropertyName == nameof(this.Area)) {

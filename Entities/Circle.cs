@@ -15,10 +15,9 @@ namespace SceneDisplayer.Entities {
         /// <param name="radius">The radius of the <c>Circle</c>.</param>
         /// <param name="color">The color of the <c>Circle</c>.</param>
         /// <param name="sides">The number of sides the <c>Circle</c> has. 10 by default.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public Circle(PointF center, float radius, Color color, int sides = 10, bool relativeToScreenSize = true)
-        : base(relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public Circle(PointF center, float radius, Color color, int sides = 10, Scale scale = Scale.RelativeToScreen)
+        : base(scale) {
             this.Center = center;
             this.Radius = radius;
             this.Color = color;
@@ -63,7 +62,7 @@ namespace SceneDisplayer.Entities {
 
         public override void Init() {
             for (int i = 0; i < this.Sides; i++) {
-                this.AddChild(("Side", i), new Line(new PointF(), new PointF(), this.Color, false));
+                this.AddChild(("Side", i), new Line(new PointF(), new PointF(), this.Color, Scale.AbsoluteInPixels));
             }
         }
 

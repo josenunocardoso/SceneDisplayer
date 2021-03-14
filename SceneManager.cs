@@ -163,20 +163,20 @@ namespace SceneDisplayer {
                         var buttonEvent = e.button;
 
                         if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
-                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.LEFT, w, h);
+                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.Left, w, h);
                         }
                         if (buttonEvent.button == SDL.SDL_BUTTON_RIGHT) {
-                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.RIGHT, w, h);
+                            MouseDown(buttonEvent.x, buttonEvent.y, MouseButton.Right, w, h);
                         }
                     }
                     if (e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONUP) {
                         var buttonEvent = e.button;
 
                         if (buttonEvent.button == SDL.SDL_BUTTON_LEFT) {
-                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.LEFT, w, h);
+                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.Left, w, h);
                         }
                         if (buttonEvent.button == SDL.SDL_BUTTON_RIGHT) {
-                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.RIGHT, w, h);
+                            MouseUp(buttonEvent.x, buttonEvent.y, MouseButton.Right, w, h);
                         }
                     }
                     if (e.type == SDL.SDL_EventType.SDL_KEYDOWN) {
@@ -259,7 +259,7 @@ namespace SceneDisplayer {
     }
 
     public enum MouseButton {
-        LEFT,
-        RIGHT
+        Left,
+        Right
     }
 }

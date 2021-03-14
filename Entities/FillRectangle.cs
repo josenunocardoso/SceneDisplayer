@@ -13,10 +13,9 @@ namespace SceneDisplayer.Entities {
         /// </summary>
         /// <param name="area">The area of the rectangle.</param>
         /// <param name="color">The color of the rectangle.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public FillRectangle(RectF area, Color color, bool relativeToScreenSize = true)
-        : base(area, relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public FillRectangle(RectF area, Color color, Scale scale = Scale.RelativeToScreen)
+        : base(area, scale) {
             this.Color = color;
         }
 

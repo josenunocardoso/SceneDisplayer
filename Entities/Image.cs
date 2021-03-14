@@ -18,10 +18,9 @@ namespace SceneDisplayer.Entities {
         /// </summary>
         /// <param name="area">The area of the <c>Image</c>.</param>
         /// <param name="path">The path of the texture of the <c>Image</c>. (e.g. a jpg or bmp file)</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public Image(RectF area, string path, bool relativeToScreenSize = true)
-        : this(area, path, 0xFF, relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public Image(RectF area, string path, Scale scale = Scale.RelativeToScreen)
+        : this(area, path, 0xFF, scale) {
 
         }
 
@@ -32,10 +31,9 @@ namespace SceneDisplayer.Entities {
         /// <param name="path">The path of the texture of the <c>Image</c>. (e.g. a jpg or bmp file)</param>
         /// <param name="alpha">The image alpha channel. Set it to 0x0 to make the image transparent.
         /// Set it to 0xFF to make it opaque.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public Image(RectF area, string path, byte alpha, bool relativeToScreenSize = true)
-        : this(area, path, alpha, 0.0, relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public Image(RectF area, string path, byte alpha, Scale scale = Scale.RelativeToScreen)
+        : this(area, path, alpha, 0.0, scale) {
 
         }
 
@@ -48,10 +46,9 @@ namespace SceneDisplayer.Entities {
         /// Set it to 0xFF to make it opaque.</param>
         /// <param name="angle">The angle in degrees of the rotation applied on the center of the image.
         /// The default is 0.</param>
-        /// <param name="relativeToScreenSize">True, to consider positions relative to the screen size.
-        /// False, to consider absolute positions, in pixels.</param>
-        public Image(RectF area, string path, byte alpha, double angle, bool relativeToScreenSize = true)
-        : base(area, relativeToScreenSize) {
+        /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
+        public Image(RectF area, string path, byte alpha, double angle, Scale scale = Scale.RelativeToScreen)
+        : base(area, scale) {
             this.ImagePath = path;
             this.Alpha = alpha;
             this.Angle = angle;
