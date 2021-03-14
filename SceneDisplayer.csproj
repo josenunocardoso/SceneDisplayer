@@ -8,7 +8,7 @@
     <Description>The Scene Displayer Library is built on top of SDL. It allows to easily render scenes that contain 2D objects in C#.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>SDL, Display, Graphics, 2D, Render</PackageTags>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
     <RepositoryUrl>https://github.com/josenunocardoso/SceneDisplayer/</RepositoryUrl>
   </PropertyGroup>
 
