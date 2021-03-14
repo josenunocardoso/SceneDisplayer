@@ -51,15 +51,13 @@ public class MyEntity : Entity
             new RectF(0.5f, 0.6f, 0.15f, 0.1f), Color.Green
         );
 
-        this.AddChild("Red", redRectangle);
-        this.AddChild("Green", greenRectangle);
+        this.AddChild(redRectangle);
+        this.AddChild(greenRectangle);
     }
 }
 ```
 
 - Here we created a new Entity, called MyEntity. We also have overriten the Init method, to add two children Entities.
-
-- The AddChild method requests a unique key, alongside the Entity to add. We can later get a given child through their key.
 
 - The order on which we add the children matters. The children that are added first, are rendered first. Therefor, in this case, the green rectangle will be drawn over the red rectangle.
 
