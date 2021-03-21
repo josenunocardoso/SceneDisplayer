@@ -22,6 +22,7 @@ namespace SceneDisplayer.Entities {
             this.Radius = radius;
             this.Color = color;
             this.Sides = sides;
+            this.ClickableEntityTraits = new ClickableEntityTraits(Drag.NotDraggable);
         }
 
 
@@ -44,6 +45,11 @@ namespace SceneDisplayer.Entities {
         /// The number of sides of the <c>Circle</c>.
         /// </summary>
         public int Sides { get; }
+
+        /// <summary>
+        /// This Clickable Entity Traits.
+        /// </summary>
+        public ClickableEntityTraits ClickableEntityTraits { get; set; }
 
 
         public event EventHandler<ClickArgs> Click;

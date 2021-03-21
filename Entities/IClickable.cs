@@ -22,5 +22,10 @@ namespace SceneDisplayer.Entities {
         /// <param name="windowHeight">Window height in pixels.</param>
         /// <returns>True if it is contained, False otherwise.</returns>
         bool Contains((int, int) point, int windowWidth, int windowHeight);
+
+        /// <summary>
+        /// This Clickable Entity Traits.
+        /// </summary>
+        ClickableEntityTraits ClickableEntityTraits { get; set; }
     }
 }

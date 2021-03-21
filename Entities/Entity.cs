@@ -335,7 +335,7 @@ namespace SceneDisplayer.Entities {
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
         protected RectangularEntity(RectF area, Scale scale) : base(scale) {
             this.Area = area;
-            this.RectangularEntityTraits = new RectangularEntityTraits(Drag.NotDraggable);
+            this.ClickableEntityTraits = new ClickableEntityTraits(Drag.NotDraggable);
 
             this.Click += this.OnClick;
             this.MouseUp += this.OnMouseUp;
@@ -355,9 +355,9 @@ namespace SceneDisplayer.Entities {
         }
 
         /// <summary>
-        /// This Rectangular Entity Traits.
+        /// This Clickable Entity Traits.
         /// </summary>
-        public RectangularEntityTraits RectangularEntityTraits { get; set; }
+        public ClickableEntityTraits ClickableEntityTraits { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -368,15 +368,15 @@ namespace SceneDisplayer.Entities {
         public override void Update(int windowWidth, int windowHeight, uint deltaTime) {
             base.Update(windowWidth, windowHeight, deltaTime);
 
-            if (this.RectangularEntityTraits.Drag != Drag.NotDraggable) {
+            if (this.ClickableEntityTraits.Drag != Drag.NotDraggable) {
                 var mousePos = this.AbsoluteToRelative(SceneManager.GetMousePosition(),
                     windowWidth, windowHeight);
 
                 if (this._dragging && !mousePos.Equals(this._lastDraggedMousePos)) {
-                    if (this.RectangularEntityTraits.Drag == Drag.DraggableAtCenter) {
+                    if (this.ClickableEntityTraits.Drag == Drag.DraggableAtCenter) {
                         this.Area = new RectF(mousePos.x, mousePos.y, this.Area.w, this.Area.h);
                     }
-                    else if (this.RectangularEntityTraits.Drag == Drag.Draggable) {
+                    else if (this.ClickableEntityTraits.Drag == Drag.Draggable) {
                         this.Area = new RectF(
                             mousePos.x + this._relativeDragPos.Value.x,
                             mousePos.y + this._relativeDragPos.Value.y,
@@ -499,9 +499,9 @@ namespace SceneDisplayer.Entities {
         public Scale Scale { get; set; }
     }
 
-    public sealed class RectangularEntityTraits {
+    public sealed class ClickableEntityTraits {
 
-        public RectangularEntityTraits(Drag drag) {
+        public ClickableEntityTraits(Drag drag) {
             this.Drag = drag;
         }
 
