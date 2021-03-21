@@ -1,5 +1,4 @@
 using System;
-using SDL2;
 
 namespace SceneDisplayer.Entities {
     /// <summary>
