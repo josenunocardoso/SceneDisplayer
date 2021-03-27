@@ -80,7 +80,7 @@ namespace SceneDisplayer {
         /// <param name="title">The title of the window.</param>
         public static void Init(Scene defaultScene, string title) {
             SDL_ttf.TTF_Init();
-            SDL.SDL_Init(0);
+            SDL.SDL_Init(SDL.SDL_INIT_EVERYTHING);
 
             PushScene(defaultScene);
 
@@ -192,6 +192,8 @@ namespace SceneDisplayer {
                         }
                     }
                 }
+
+                SDL.SDL_GL_SwapWindow(_window);
                 
                 if (DELAY_TIME > delta) {
                     uint delaytime = DELAY_TIME - delta;
@@ -202,6 +204,8 @@ namespace SceneDisplayer {
                 
                 frameStartTime = SDL.SDL_GetTicks();
             }
+
+            SDL.SDL_DestroyWindow(_window);
 
             SDL.SDL_Quit();
         }

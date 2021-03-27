@@ -4,19 +4,19 @@ using SDL2;
 
 namespace SceneDisplayer.Entities {
     /// <summary>
-    /// An <see cref="Entity"/> that renders a circle.
+    /// An <see cref="Entity"/> that renders a filled circle.
     /// </summary>
-    public class Circle : Entity, IClickable {
+    public class FillCircle : Entity, IClickable {
         
         /// <summary>
-        /// Constructs a <c>Circle</c>.
+        /// Constructs a <c>FillCircle</c>.
         /// </summary>
         /// <param name="center">The center of the <c>Circle</c>.</param>
         /// <param name="radius">The radius of the <c>Circle</c>.</param>
         /// <param name="color">The color of the <c>Circle</c>.</param>
         /// <param name="sides">The number of sides the <c>Circle</c> has. 20 by default.</param>
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
-        public Circle(PointF center, float radius, Color color, int sides = 20, Scale scale = Scale.RelativeToScreen)
+        public FillCircle(PointF center, float radius, Color color, int sides = 20, Scale scale = Scale.RelativeToScreen)
         : base(scale) {
             this.Center = center;
             this.Radius = radius;
@@ -68,7 +68,8 @@ namespace SceneDisplayer.Entities {
 
         public override void Init() {
             for (int i = 0; i < this.Sides; i++) {
-                this.AddChild(("Side", i), new Line(new PointF(), new PointF(), this.Color, Scale.AbsoluteInPixels));
+                this.AddChild(("Triangle", i),
+                    new FillTriangle(new PointF(), new PointF(), new PointF(), this.Color, Scale.AbsoluteInPixels));
             }
         }
 
@@ -78,33 +79,21 @@ namespace SceneDisplayer.Entities {
             if (!this.EntityTraits.Visible) {
                 return;
             }
-
+            
             var center = this.GetAbsolutePoint(this.Center, windowWidth, windowHeight);
-            float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
+            int radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
 
-            float sides = this.Sides;
-            if (sides == 0) {
-                sides = (float)Math.PI * radius;
-            }
+            SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
 
-            float d_a = (float)Math.PI * 2 / this.Sides;
-            float angle = d_a;
+            int rd2 = radius * radius;
 
-            PointF start, end;
-            end.x = radius + center.x;
-            end.y = center.y;
-
-            for (int i = 0; i < sides; i++) {
-                start = end;
-                end.x = (float)Math.Cos(angle) * radius + center.x;
-                end.y = (float)Math.Sin(angle) * radius + center.y;
-                
-                angle += d_a;
-
-                var line = this.GetChild<Line>(("Side", i));
-                line.Source = start;
-                line.Destination = end;
-                line.Color = this.Color;
+            for (uint dx = 0; dx < radius * 2; dx++) {
+                SDL.SDL_RenderDrawLine(renderer,
+                    (int)(center.x - radius + dx),
+                    (int)(center.y + Math.Sqrt(rd2 - (dx - radius) * (dx - radius))),
+                    (int)(center.x - radius + dx),
+                    (int)(center.y - Math.Sqrt(rd2 - (dx - radius) * (dx - radius)))
+                );
             }
         }
     }
