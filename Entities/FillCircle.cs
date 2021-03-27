@@ -66,13 +66,6 @@ namespace SceneDisplayer.Entities {
         }
 
 
-        public override void Init() {
-            for (int i = 0; i < this.Sides; i++) {
-                this.AddChild(("Triangle", i),
-                    new FillTriangle(new PointF(), new PointF(), new PointF(), this.Color, Scale.AbsoluteInPixels));
-            }
-        }
-
         public override void Draw(IntPtr renderer, int windowWidth, int windowHeight, uint deltaTime) {
             base.Draw(renderer, windowWidth, windowHeight, deltaTime);
 
