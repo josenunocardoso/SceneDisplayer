@@ -15,13 +15,18 @@ namespace SceneDisplayer.Entities {
         /// <param name="radius">The radius of the <c>Circle</c>.</param>
         /// <param name="color">The color of the <c>Circle</c>.</param>
         /// <param name="sides">The number of sides the <c>Circle</c> has. 20 by default.</param>
+        /// <param name="radiusRelativePosition">Whether the radius value should be relative to the X axis, or to the Y axis.
+        /// This is only relevant if the Scale is <c>RelativeToScreen</c></param>
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
-        public Circle(PointF center, float radius, Color color, int sides = 20, Scale scale = Scale.RelativeToScreen)
+        public Circle(PointF center, float radius, Color color, int sides = 20,
+            RadiusRelativePosition radiusRelativePosition = RadiusRelativePosition.RelativeToX,
+            Scale scale = Scale.RelativeToScreen)
         : base(scale) {
             this.Center = center;
             this.Radius = radius;
             this.Color = color;
             this.Sides = sides;
+            this.RadiusRelativePosition = radiusRelativePosition;
             this.ClickableEntityTraits = new ClickableEntityTraits(Drag.NotDraggable);
         }
 
@@ -45,6 +50,11 @@ namespace SceneDisplayer.Entities {
         /// The number of sides of the <c>Circle</c>.
         /// </summary>
         public int Sides { get; }
+
+        /// <summary>
+        /// Whether the radius value should be relative to the X axis, or to the Y axis.
+        /// </summary>
+        public RadiusRelativePosition RadiusRelativePosition { get; set; }
 
         /// <summary>
         /// This Clickable Entity Traits.
@@ -80,7 +90,14 @@ namespace SceneDisplayer.Entities {
             }
 
             var center = this.GetAbsolutePoint(this.Center, windowWidth, windowHeight);
-            float radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
+            int radius = 0;
+            if (this.EntityTraits.Scale == Scale.AbsoluteInPixels) {
+                radius = (int)this.Radius;
+            }
+            else if (this.EntityTraits.Scale == Scale.RelativeToScreen) {
+                var radiusPt = this.GetAbsolutePoint(new PointF(this.Radius, this.Radius), windowWidth, windowHeight);
+                radius = this.RadiusRelativePosition == RadiusRelativePosition.RelativeToX ? radiusPt.x : radiusPt.y;
+            }
 
             float sides = this.Sides;
             if (sides == 0) {

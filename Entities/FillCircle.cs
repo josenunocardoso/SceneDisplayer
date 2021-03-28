@@ -11,17 +11,20 @@ namespace SceneDisplayer.Entities {
         /// <summary>
         /// Constructs a <c>FillCircle</c>.
         /// </summary>
-        /// <param name="center">The center of the <c>Circle</c>.</param>
-        /// <param name="radius">The radius of the <c>Circle</c>.</param>
-        /// <param name="color">The color of the <c>Circle</c>.</param>
-        /// <param name="sides">The number of sides the <c>Circle</c> has. 20 by default.</param>
+        /// <param name="center">The center of the <c>FillCircle</c>.</param>
+        /// <param name="radius">The radius of the <c>FillCircle</c>.</param>
+        /// <param name="color">The color of the <c>FillCircle</c>.</param>
+        /// <param name="radiusRelativePosition">Whether the radius value should be relative to the X axis, or to the Y axis.
+        /// This is only relevant if the Scale is <c>RelativeToScreen</c></param>
         /// <param name="scale">The scaling behavior of the <c>Entity</c>.</param>
-        public FillCircle(PointF center, float radius, Color color, int sides = 20, Scale scale = Scale.RelativeToScreen)
+        public FillCircle(PointF center, float radius, Color color,
+            RadiusRelativePosition radiusRelativePosition = RadiusRelativePosition.RelativeToX,
+            Scale scale = Scale.RelativeToScreen)
         : base(scale) {
             this.Center = center;
             this.Radius = radius;
             this.Color = color;
-            this.Sides = sides;
+            this.RadiusRelativePosition = radiusRelativePosition;
             this.ClickableEntityTraits = new ClickableEntityTraits(Drag.NotDraggable);
         }
 
@@ -42,9 +45,9 @@ namespace SceneDisplayer.Entities {
         public Color Color { get; set; }
 
         /// <summary>
-        /// The number of sides of the <c>Circle</c>.
+        /// Whether the radius value should be relative to the X axis, or to the Y axis.
         /// </summary>
-        public int Sides { get; }
+        public RadiusRelativePosition RadiusRelativePosition { get; set; }
 
         /// <summary>
         /// This Clickable Entity Traits.
@@ -74,7 +77,14 @@ namespace SceneDisplayer.Entities {
             }
             
             var center = this.GetAbsolutePoint(this.Center, windowWidth, windowHeight);
-            int radius = this.GetAbsolutePoint(new PointF { x = this.Radius, y = this.Radius }, windowWidth, windowHeight).x;
+            int radius = 0;
+            if (this.EntityTraits.Scale == Scale.AbsoluteInPixels) {
+                radius = (int)this.Radius;
+            }
+            else if (this.EntityTraits.Scale == Scale.RelativeToScreen) {
+                var radiusPt = this.GetAbsolutePoint(new PointF(this.Radius, this.Radius), windowWidth, windowHeight);
+                radius = this.RadiusRelativePosition == RadiusRelativePosition.RelativeToX ? radiusPt.x : radiusPt.y;
+            }
 
             SDL.SDL_SetRenderDrawColor(renderer, this.Color.r, this.Color.g, this.Color.b, this.Color.a);
 
@@ -89,5 +99,10 @@ namespace SceneDisplayer.Entities {
                 );
             }
         }
+    }
+
+    public enum RadiusRelativePosition {
+        RelativeToX,
+        RelativeToY
     }
 }
