@@ -10,11 +10,28 @@ namespace SceneDisplayer.Utils {
         public byte b;
         public byte a;
 
+        /// <summary>
+        /// Constructs a Color.
+        /// </summary>
+        /// <param name="r">Red channel.</param>
+        /// <param name="g">Green channel.</param>
+        /// <param name="b">Blue channel.</param>
+        /// <param name="a">Alpha channel.</param>
         public Color(byte r, byte g, byte b, byte a = 0xFF) {
             this.r = r;
             this.g = g;
             this.b = b;
             this.a = a;
+        }
+
+        /// <summary>
+        /// Constructs a Color based on another color, with a given Alpha channel.
+        /// </summary>
+        /// <param name="color">Other Color.</param>
+        /// <param name="a">Alpha channel.</param>
+        public Color(Color color, byte a)
+        : this(color.r, color.g, color.b, a) {
+            
         }
 
 

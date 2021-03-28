@@ -39,6 +39,11 @@ namespace SceneDisplayer.Utils {
             return new PointF(p.x / divider, p.y / divider);
         }
 
+        /// <summary>
+        /// Returns a PointF with the position at (0, 0).
+        /// </summary>
+        public static PointF Zero => new PointF(0, 0);
+
 
         public bool Equals(PointF obj) {
             return this.x == obj.x && this.y == obj.y;

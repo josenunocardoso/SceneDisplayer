@@ -1,3 +1,4 @@
+using System;
 using SDL2;
 
 namespace SceneDisplayer.Utils {
@@ -24,11 +25,29 @@ namespace SceneDisplayer.Utils {
             this.h = h;
         }
 
+        /// <summary>
+        /// Constructs a RectF.
+        /// </summary>
+        /// <param name="center">Center position.</param>
+        /// <param name="size">Size.</param>
+        public RectF(PointF center, PointF size) {
+            this.x = center.x;
+            this.y = center.y;
+            this.w = size.x;
+            this.h = size.y;
+        }
+
+
+        public PointF Center => new PointF(this.x, this.y);
+
+        public PointF Size => new PointF(this.w, this.y);
+
 
         /// <summary>
         /// Returns an equivalent <see cref="SDL.SDL_Rect"/>, with the values casted to <see cref="int"/>.
         /// </summary>
         /// <returns>The SDL_Rect.</returns>
+        [Obsolete("This method will be removed in a future version")]
         public SDL.SDL_Rect ToSDLRect() {
             return new SDL.SDL_Rect {
                 x = (int)this.x,
@@ -59,6 +78,11 @@ namespace SceneDisplayer.Utils {
                 && point.y >= this.y && point.y <= this.y + this.h;
         }
 
+
+        /// <summary>
+        /// Returns a RectF with center at (0, 0) and with no size.
+        /// </summary>
+        public static RectF Zero => new RectF(0, 0, 0, 0);
 
         public static RectF operator +(RectF r1, RectF r2) {
             return new RectF(r1.x + r2.x, r1.y + r2.y, r1.w + r2.w, r1.h + r2.h);
